@@ -1,0 +1,123 @@
+/*// Extra small devices (portrait phones, less than 576px)*/
+@media (max-width: 575px) { 
+    .ac-menu li{
+        display: block;
+        padding-bottom: 10px;
+    }
+    #account-menu{
+        padding: 25px 0 0 0;
+    }
+    #account-content{
+        padding-top: 25px;
+    }
+    .ad-form{
+        padding: 30px 0;
+    }
+    .search-bar .col-md-3{
+        margin-bottom: 10px;
+    }
+    .mobile-none{
+        display: none;
+    }
+    .ac-box{
+        padding: 0;
+    }
+    .exzoom .exzoom_nav{
+        left: 0 !important;
+    }
+    .start-marketing-icon{
+        margin: auto;
+    }
+    .start-marketing-text{
+        text-align: center;
+    }
+    .stm-btn{
+        margin: auto
+    }
+    .banner-src-form input{
+        height: 45px;
+    }
+    .banner-src-form .btn i{
+        font-size: 12px;
+    }
+    .banner-src-form .btn{
+        padding: 11px;
+    }
+      .main-category .col-md-3{
+        width: 50% !important;
+    }
+    .chat_box{
+        width: 100%;
+    }
+    .navbar-brand{
+        margin-right: 0 !important;
+    }
+    .logo-side{
+    margin-left: 0px;
+}
+  
+}
+
+/*// Small devices (landscape phones, 576px and up)*/
+@media (min-width: 576px) and (max-width: 767px) { 
+       .ac-menu li{
+        display: block;
+        padding-bottom: 10px;
+    }
+    #account-menu{
+        padding: 25px 0 0 0;
+    }
+    #account-content{
+        padding-top: 25px;
+    }
+
+   .ad-form{
+        padding: 30px 0;
+    }
+      .search-bar .col-md-3{
+        margin-bottom: 10px;
+    }
+    .mobile-none{
+        display: none;
+    }
+      .ac-box{
+        padding: 0;
+    }
+     .start-marketing-icon{
+        margin: auto;
+    }
+    .start-marketing-text{
+        text-align: center;
+    }
+    .stm-btn{
+        margin: auto
+    }
+        .banner-src-form input{
+        height: 45px;
+    }
+    .banner-src-form .btn i{
+        font-size: 12px;
+    }
+    .banner-src-form .btn{
+        padding: 11px;
+    }
+  
+}
+
+/*// Medium devices (tablets, 768px and up)*/
+@media (min-width: 768px) and (max-width: 991px) { 
+
+    .start-marketing-icon{
+        width: auto;
+        height: auto;
+    }
+    .stm-btn{
+        padding: 7px 12px;
+    }
+}
+
+/*// Large devices (desktops, 992px and up)*/
+@media (min-width: 992px) and (max-width: 1199px) {  }
+
+/*// Extra large devices (large desktops, 1200px and up)*/
+@media (min-width: 1200px) {  }
