@@ -7,7 +7,7 @@ use App\Models\Admin;
 use App\Models\Customer;
 use App\Models\Superadmin;
 use Illuminate\Http\Request;
-use Kamaln7\Toastr\Facades\Toastr;
+use Flasher\Prime\FlasherInterface;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Lang;
@@ -138,7 +138,7 @@ class LoginController extends Controller
 
         if ($request->user == 'superadmin') {
 
-            $info = Superadmin::find(Auth::guard('superadmin')->user()->id)->update(array('remember_token' => null));
+            $info = Superadmin::find(Auth::guard('superadmin')->user()->_id)->update(array('remember_token' => null));
 
             if ($info) {
                 $this->guard()->logout();
@@ -193,7 +193,7 @@ class LoginController extends Controller
         return view('auth.login', ['url' => 'admin', 'pageConfigs' => $pageConfigs]);
     }
 
-    public function adminLogin(Request $request)
+    public function adminLogin(Request $request, FlasherInterface $flasher)
     {
 
         $this->validate($request, [
@@ -209,7 +209,8 @@ class LoginController extends Controller
 
             Superadmin::first()->notify(new Superadminnotification($data));
         }
-        Toastr::success("WelCome Administration Panel");
+        $flasher->addError('WelCome Administration Panel');
+        
         return redirect()->intended('/admin/dashboard');
 
 
@@ -241,17 +242,17 @@ class LoginController extends Controller
         return view('auth.login', ['url' => 'superadmin', 'pageConfigs' => $pageConfigs]);
     }
 
-    public function superadminLogin(Request $request)
+    public function superadminLogin(Request $request, FlasherInterface $flasher)
     {
         // return $request->all();
         $this->validate($request, [
-            'email'   => 'required|email',
+            'email'   => 'required|email|exists:superadmins,email',
             'password' => 'required|min:6'
         ]);
         $remember = (!empty($request->remember)) ? TRUE : FALSE;
         if (Auth::guard('superadmin')->attempt(['email' => $request->email, 'password' => $request->password], $remember)) {
-
-            Toastr::success("Welcome  Adminstration Panel");
+            $flasher->addSuccess('WelCome Administration Panel');
+           
             return redirect()->intended('/superadmin/dashboard');
         }
         return back()->withInput($request->only('email', 'remember'));

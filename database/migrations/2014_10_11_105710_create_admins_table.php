@@ -14,11 +14,12 @@ class CreateAdminsTable extends Migration
     public function up()
     {
         Schema::create('admins', function (Blueprint $table) {
-            $table->id();
+            // $table->id();
             $table->bigInteger('superadmin_id')->unsigned()->nullable();
-            $table->foreign('superadmin_id')->references('id')->on('superadmins')->onDelete('cascade');   
+            $table->foreign('superadmin_id')->references('_id')->on('superadmins')->onDelete('cascade');   
             $table->string('name');
             $table->string('image')->nullable();
+            $table->string('path')->nullable();
             $table->string('phone')->unique();
             $table->string('customerprefix',10)->unique();
             $table->string('email')->unique();

@@ -1,9 +1,10 @@
 <?php
 namespace App\Models;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Model;
+use Jenssegers\Mongodb\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Jenssegers\Mongodb\Auth\User as Authenticatable;
 use App\Notifications\AdminResetPasswordNotification;
 use Jenssegers\Mongodb\Eloquent\Model as Eloquent; //for use mongodb
 class Admin extends  Authenticatable implements MustVerifyEmail

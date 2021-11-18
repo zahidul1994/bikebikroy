@@ -2,10 +2,10 @@
 
 namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Jenssegers\Mongodb\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
-
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Jenssegers\Mongodb\Eloquent\Model as Eloquent; //for use mongodb
+use Jenssegers\Mongodb\Auth\User as Authenticatable;
 
 class Superadmin extends  Authenticatable 
 {

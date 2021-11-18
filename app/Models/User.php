@@ -1,10 +1,12 @@
 <?php
 
 namespace App\Models;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Model;
+use Jenssegers\Mongodb\Eloquent\Model as Eloquent; //for use mongodb
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Jenssegers\Mongodb\Eloquent\SoftDeletes;
+use Jenssegers\Mongodb\Auth\User as Authenticatable;
 class User extends Authenticatable 
 {
     use Notifiable;

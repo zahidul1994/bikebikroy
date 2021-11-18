@@ -14,7 +14,7 @@ class CreateSuperadminsTable extends Migration
     public function up()
     {
         Schema::create('superadmins', function (Blueprint $table) {
-            $table->id('id');
+            // $table->id('id');
             $table->string('superadminname');
             $table->string('image')->nullable();
             $table->string('phone',50);

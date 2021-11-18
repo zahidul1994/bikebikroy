@@ -1,24 +1,20 @@
 <?php
 
 namespace App\Models;
-
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-
+use Jenssegers\Mongodb\Eloquent\Model; //for use mongodb
 class Package extends Model
 {
-    use HasFactory;
+  
     protected $fillable=[
+        'superadmin_id',
         'packagename',
         'packageprice',
+        'expiryday',
         'description',
          'status',
     ];
 
-    public function merchant()
-    {
-        return $this->belongsTo('App\Models\Merchant');
-    }
+    
     public function customer()
     {
         return $this->hasOne('App\Models\Customer');

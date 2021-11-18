@@ -1,0 +1,488 @@
+@media (max-width: 575px) {
+    .main-toggle-btn-mobile {
+        display: inline-block !important;
+    }
+
+    .main-toggle-btn {
+        display: none;
+    }
+
+    .main-content {
+        padding-left: 0 !important;
+    }
+
+    .sidebar {
+        position: absolute;
+        left: -256px;
+        z-index: 999
+    }
+
+    .main-header-col {
+        width: 43%;
+        align-self: center;
+    }
+
+    .main-header-col-icon {
+        width: 14%
+    }
+
+
+    .progress-box {
+        padding: 5px 10px !important;
+    }
+
+    .dashboard-social-card .col-md-4 {
+        padding-bottom: 20px;
+    }
+
+    .dashboard-social-card .col-md-4 .col-md-6 {
+        width: 50%;
+    }
+
+    .home-table-bottom {
+        width: 100%;
+        overflow-x: scroll;
+    }
+
+    .home-table-bottom table {
+        width: 1175px;
+    }
+
+    .htm-card {
+        margin: 10px 0;
+    }
+
+    .calendar-wrapper td {
+        height: 55px !important;
+        font-size: 12px;
+    }
+
+    #btnPrev,
+    #btnNext {
+        font-size: 12px !important;
+    }
+
+    .tooltips-card {
+        padding-bottom: 150px !important;
+    }
+
+    .collapse-card .btn {
+        margin-bottom: 10px;
+    }
+
+    .pagination-box .page-link {
+        font-size: 12px;
+    }
+
+    .nav-tabs .nav-item.show .nav-link,
+    .nav-tabs .nav-link {
+        font-size: 12px;
+        padding: 10px;
+    }
+
+    .nav-pills .nav-link {
+        font-size: 12px;
+        padding: 10px;
+    }
+
+    .tb-page-down {
+        display: block !important;
+    }
+
+    .tooltip-box .btn {
+        margin-bottom: 10px;
+    }
+
+
+
+    /*    mobile menu*/
+    .sidebar {
+        transition: all .3s linear;
+    }
+
+    .body-dark-mobile {
+        position: absolute;
+        height: 100%;
+        width: 0;
+        background-color: #000;
+        z-index: 99;
+        text-align: right;
+        padding: 20px;
+        opacity: .6;
+        left: -100px;
+        top: 0;
+        display: block !important;
+    }
+
+    .body-dark-mobile-active {
+        width: 100%;
+        left: 0;
+    }
+
+    .body-dark-mobile i {
+        color: #fff;
+        font-size: 20px;
+        cursor: pointer;
+    }
+
+    .m-sidebar-active {
+        left: 0;
+        z-index: 999;
+        transition: all .3s linear;
+    }
+
+    .non-scroll-body {
+        overflow-y: hidden;
+    }
+
+    .up-img {
+        width: 15% !important;
+    }
+
+    .up-text {
+        width: 85% !important;
+    }
+
+
+}
+
+
+@media (min-width: 576px) and (max-width: 767px) {
+
+    .main-toggle-btn-mobile {
+        display: inline-block !important;
+    }
+
+    .main-toggle-btn {
+        display: none;
+    }
+
+    .main-content {
+        padding-left: 0 !important;
+    }
+
+    .sidebar {
+        position: absolute;
+        left: -256px;
+        z-index: 999
+    }
+
+    .main-header-col {
+        width: 43%;
+        align-self: center;
+    }
+
+    .main-header-col-icon {
+        width: 14%
+    }
+
+    .progress-box {
+        padding: 5px 10px !important;
+    }
+
+    .dashboard-social-card .col-md-4 {
+        padding-bottom: 20px;
+    }
+
+    .dashboard-social-card .col-md-4 .col-md-6 {
+        width: 50%;
+    }
+
+    .home-table-bottom {
+        width: 100%;
+        overflow-x: scroll;
+    }
+
+    .home-table-bottom table {
+        width: 1175px;
+    }
+
+    .htm-card {
+        margin: 10px 0;
+    }
+
+    .collapse-card .btn {
+        margin-bottom: 10px;
+    }
+
+    .tooltip-box .btn {
+        margin-bottom: 10px;
+    }
+
+    /*    mobile menu*/
+    .sidebar {
+        transition: all .3s linear;
+    }
+
+    .body-dark-mobile {
+        position: absolute;
+        height: 100%;
+        width: 0;
+        background-color: #000;
+        z-index: 99;
+        text-align: right;
+        padding: 20px;
+        opacity: .6;
+        left: -100px;
+        top: 0;
+        display: block !important;
+    }
+
+    .body-dark-mobile-active {
+        width: 100%;
+        left: 0;
+    }
+
+    .body-dark-mobile i {
+        color: #fff;
+        font-size: 20px;
+        cursor: pointer;
+    }
+
+    .m-sidebar-active {
+        left: 0;
+        z-index: 999;
+        transition: all .3s linear;
+    }
+
+    .non-scroll-body {
+        overflow-y: hidden;
+    }
+
+    .up-img {
+        width: 10% !important;
+    }
+
+    .up-text {
+        width: 90% !important;
+    }
+
+
+}
+
+
+@media (min-width: 768px) and (max-width: 991px) {
+    .main-toggle-btn-mobile {
+        display: inline-block !important;
+    }
+
+    .main-toggle-btn {
+        display: none;
+    }
+
+    .main-content {
+        padding-left: 0 !important;
+    }
+
+    .sidebar {
+        position: absolute;
+        left: -256px;
+        z-index: 999;
+    }
+
+    .main-header-col {
+        width: 43%;
+        align-self: center;
+    }
+
+    .main-header-col-icon {
+        width: 14%
+    }
+
+    .tc-tittle {
+        font-size: 26px !important;
+    }
+
+    .tc-text {
+        font-size: 11px;
+    }
+
+    .tc-single i {
+        font-size: 55px !important;
+    }
+
+    .tc-more {
+        font-size: 12px;
+    }
+
+    .social-card-couter-lg {
+        font-size: 25px !important;
+    }
+
+    .social-card-couter-text {
+        font-size: 11px !important;
+    }
+
+    .home-table-bottom {
+        width: 100%;
+        overflow-x: scroll;
+    }
+
+    .home-table-bottom table {
+        width: 1175px;
+    }
+
+    .user-logo {
+        font-size: 24px !important;
+    }
+
+    .user-card a {
+        font-size: 9px;
+    }
+
+    .signin-link {
+        font-size: 16px !important;
+    }
+
+    .error-name {
+        font-size: 33px !important;
+    }
+
+    .ls-img-col {
+        width: 100%;
+    }
+
+    .ls-text-col {
+        width: 100%;
+    }
+
+    /*    mobile menu*/
+    .sidebar {
+        transition: all .3s linear;
+    }
+
+    .body-dark-mobile {
+        position: absolute;
+        height: 100%;
+        width: 0;
+        background-color: #000;
+        z-index: 99;
+        text-align: right;
+        padding: 20px;
+        opacity: .6;
+        left: -100px;
+        top: 0;
+        display: block !important;
+    }
+
+    .body-dark-mobile-active {
+        width: 100%;
+        left: 0;
+    }
+
+    .body-dark-mobile i {
+        color: #fff;
+        font-size: 20px;
+        cursor: pointer;
+    }
+
+    .m-sidebar-active {
+        left: 0;
+        z-index: 999;
+        transition: all .3s linear;
+    }
+
+    .non-scroll-body {
+        overflow-y: hidden;
+    }
+
+
+
+
+}
+
+
+@media (min-width: 992px) and (max-width: 1199px) {
+
+    .main-toggle-btn-mobile {
+        display: inline-block !important;
+    }
+
+    .main-toggle-btn {
+        display: none;
+    }
+
+    .main-content {
+        padding-left: 0 !important;
+    }
+
+    .sidebar {
+        position: absolute;
+        left: -256px;
+        z-index: 999;
+    }
+
+    .main-header-col {
+        width: 43%;
+        align-self: center;
+    }
+
+    .main-header-col-icon {
+        width: 14%
+    }
+
+    .user-card a {
+        font-size: 14px !important;
+    }
+
+    .signin-link {
+        font-size: 16px !important;
+    }
+
+    .error-name {
+        font-size: 49px !important;
+    }
+
+    .ls-img-col {
+        width: 100%;
+    }
+
+    .ls-text-col {
+        width: 100%;
+    }
+
+    /*    mobile menu*/
+    .sidebar {
+        transition: all .3s linear;
+    }
+
+    .body-dark-mobile {
+        position: absolute;
+        height: 100%;
+        width: 0;
+        background-color: #000;
+        z-index: 99;
+        text-align: right;
+        padding: 20px;
+        opacity: .6;
+        left: -100px;
+        top: 0;
+        display: block !important;
+    }
+
+    .body-dark-mobile-active {
+        width: 100%;
+        left: 0;
+    }
+
+    .body-dark-mobile i {
+        color: #fff;
+        font-size: 20px;
+        cursor: pointer;
+    }
+
+    .m-sidebar-active {
+        left: 0;
+        z-index: 999;
+        transition: all .3s linear;
+    }
+
+    .non-scroll-body {
+        overflow-y: hidden;
+    }
+
+
+}
+
+
+@media (min-width: 1200px) {}

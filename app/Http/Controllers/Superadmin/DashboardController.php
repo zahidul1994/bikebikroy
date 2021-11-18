@@ -35,15 +35,13 @@ class DashboardController extends Controller
         });
       
        
-        $contact= Cache::remember('contactcache', 22*60, function () {
-            return Contact::select('id','status')->get();
-        });
-
+        
     
-
+        $breadcrumbs = [
+            ['link' => "superadmin/dashboard", 'name' => "Superadmin"], ['name' => "Dashboard"]];
   
 
-       return view('superadmin.dashboard',['pageConfigs' => $pageConfigs], compact('admin','user','contact'));
+       return view('superadmin.dashboard',['breadcrumbs' => $breadcrumbs], compact('admin','user'));
     }
 
     public function deletenotification()
