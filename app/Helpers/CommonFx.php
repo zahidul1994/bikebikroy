@@ -284,7 +284,7 @@ return Country::pluck('countryname','id');
 
 }
 public static function Divisionname(){
-    return Division::pluck('division','id');
+    return Division::pluck('division','_id');
     
     }
     public static function Totalcustomerinfo(){

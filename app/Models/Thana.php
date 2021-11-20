@@ -1,13 +1,11 @@
 <?php
-
 namespace App\Models;
-
-use Illuminate\Database\Eloquent\Model;
+use Jenssegers\Mongodb\Eloquent\Model; //for use mongodb
 
 class Thana extends Model
 {
     protected $fillable = [
-        'id','district_id','thana','created_at'
+        'id','district_id','thana','created_at','bnthana','slug'
      ];
      
      

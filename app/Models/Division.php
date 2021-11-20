@@ -1,13 +1,12 @@
 <?php
 
 namespace App\Models;
-
-use Illuminate\Database\Eloquent\Model;
+use Jenssegers\Mongodb\Eloquent\Model; //for use mongodb
 
 class Division extends Model
 {
     protected $fillable = [
-       'id','d','country_id'
+       'slug','division','bndivision','country_id'
     ];
     public function country()
     {

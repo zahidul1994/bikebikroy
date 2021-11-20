@@ -88,23 +88,8 @@
 
                         </ul>
                     </li>
-                    <li>
-                        <p class="multi-menu mb-0"><i class="fas fa-share"></i> Multilevel <i class="fas fa-angle-right menu-angle-five"></i>
-                        </p>
-                        <ul class="dash-main-menu multi-toggle">
-                            <li><a href=""><i class="far fa-circle"></i> Level One</a></li>
-                        </ul>
-                        <ul class="dash-main-menu multi-toggle ms-2">
-                            <li><a href=""><i class="far fa-circle"></i> Level One</a></li>
-                        </ul>
-                        <ul class="dash-main-menu multi-toggle ms-4">
-                            <li><a href=""><i class="far fa-circle"></i> Level One</a></li>
-                        </ul>
-
-                    </li>
-                    <li><a href="colors.html"><i class="fas fa-tint"></i> Colors</a></li>
-                    <li><a href="typography.html"><i class="fas fa-pen"></i> Typography</a></li>
-                    <li><a href="editor.html"><i class="fas fa-tachometer-alt"></i> Editors (pro)</a></li>
+                    
+                   
                     <li>
                         <p class="component-menu mb-0"><i class="fas fa-tachometer-alt"></i> Setting <i class="fas fa-angle-right menu-angle-six"></i>
 
@@ -113,17 +98,26 @@
 
                         <ul class="dash-main-menu component-toggle">
                             <li><a href="{{url('superadmin/packagelist')}}"><i class="far fa-circle"></i> Package List</a></li>
-                            <li><a href="cards.html"><i class="far fa-circle"></i> Cards</a></li>
-                            <li><a href="collapse.html"><i class="far fa-circle"></i> Collapse</a></li>
-                            <li><a href="pagination.html"><i class="far fa-circle"></i> Pagination</a></li>
-                            <li><a href="progress.html"><i class="far fa-circle"></i> Progress</a></li>
-                            <li><a href="switches.html"><i class="far fa-circle"></i> Switches</a></li>
-                            <li><a href="https://fontawesome.com/v5.15/icons?d=gallery&p=2&q=angle&m=free" target="_blank"><i class="far fa-circle"></i> Icons (Font Awesome)</a></li>
-                            <li><a href="tabs.html"><i class="far fa-circle"></i> Tabs</a></li>
-                            <li><a href="tooltips.html"><i class="far fa-circle"></i> Tooltips</a></li>
+                           <li><a href="{{url('superadmin/commandlist')}}"><i class="far fa-circle"></i> Command</a></li>
 
                         </ul>
                     </li>
+                    <li>
+                        <p class="component-menu mb-0"><i class="fas fa-tachometer-alt"></i>Location Setting <i class="fas fa-angle-right menu-angle-six"></i>
+
+
+                        </p>
+
+                        <ul class="dash-main-menu component-toggle">
+                            <li><a class="page-active" href="{{url('superadmin/autolocation')}}"><i class="far fa-circle"></i> Auto Add Location</a></li>
+                           <li><a href="{{url('superadmin/commandlist')}}"><i class="far fa-circle"></i> Command</a></li>
+                           <li><a href="{{url('superadmin/divisionlist')}}"><i class="far fa-circle"></i> Divison List</a></li>
+                           <li><a href="{{url('superadmin/districtlist')}}"><i class="far fa-circle"></i> District List</a></li>
+                           <li><a href="{{url('superadmin/thanalist')}}"><i class="far fa-circle"></i> Thana</a></li>
+
+                        </ul>
+                    </li>
+                    
                 </ul>
             </div>
 
@@ -296,7 +290,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <p class="copy-right-text">
-                            Copyright © 2014-2019 All rights
+                            Copyright © 2016-{{date('Y')}} All rights
                             reserved.
 
                         </p>
@@ -323,6 +317,8 @@
     
         <script type="text/javascript"> 
     // alert(55);
+
+    
             var url = "{{URL::to('/')}}";
             $.ajaxSetup({
                           headers: {
@@ -330,6 +326,7 @@
                           }
                       });
                       $(document).ready(function () {
+ 
 $("#seennotify").click(function(){
 
  $.ajax({
@@ -357,6 +354,8 @@ $.ajax({
 });       
      
         
+
+
          
           </script>
             @yield('page-script')

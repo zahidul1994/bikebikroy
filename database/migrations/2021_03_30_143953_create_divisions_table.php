@@ -17,7 +17,9 @@ class CreateDivisionsTable extends Migration
             // $table->id();
             $table->bigInteger('country_id')->unsigned()->nullable();
             $table->foreign('country_id')->references('_id')->on('countries')->onDelete('cascade');
+            $table->string('slug')->unique();
             $table->string('division');
+            $table->string('bndivision');
             $table->timestamps();
         });
     }

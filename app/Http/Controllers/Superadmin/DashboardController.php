@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 use App\Imports\CustomerImport;
 use Kamaln7\Toastr\Facades\Toastr;
 use App\Http\Controllers\Controller;
+use App\Models\Country;
+use App\Models\District;
+use App\Models\Division;
+use App\Models\Thana;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Cache;
@@ -76,5 +80,33 @@ class DashboardController extends Controller
                return Redirect::to('superadmin/importcustomer'); 
               
     }
+
+    public function autolocation()
+    { 
+       
+        $pageConfigs = ['navbarLarge' => false];
+
+        $admin= Cache::remember('admincache', 22*60, function () {
+           return Admin::select('id','status')->get(); 
+        });
+
+        
+        $user= Cache::remember('usercache', 22*60, function () {
+            return User::select('id','status')->get(); 
+        });
+      
+       
+        
+    
+        $breadcrumbs = [
+            ['link' => "superadmin/dashboard", 'name' => "Superadmin"], ['name' => "Dashboard"]];
+  $country=Country::count('_id');
+  $division=Division::count('_id');
+  $district=District::count('_id');
+  $thana=Thana::count('_id');
+       return view('superadmin.location.index',['breadcrumbs' => $breadcrumbs],compact('country','division','thana','district'));
+    }
+
+
 
 }

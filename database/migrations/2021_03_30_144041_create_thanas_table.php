@@ -17,7 +17,9 @@ class CreateThanasTable extends Migration
             // $table->id();
             $table->bigInteger('district_id')->unsigned()->nullable();
             $table->foreign('district_id')->references('_id')->on('districts')->onDelete('cascade');
+            $table->string('slug')->unique();
             $table->string('thana');
+            $table->string('bnthana');
             $table->timestamps();
         });
     }

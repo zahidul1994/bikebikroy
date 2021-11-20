@@ -17,7 +17,9 @@ class CreateDistrictsTable extends Migration
             // $table->id();
             $table->bigInteger('division_id')->unsigned()->nullable();
             $table->foreign('division_id')->references('_id')->on('divisions')->onDelete('cascade');
+            $table->string('slug')->unique();
             $table->string('district');
+            $table->string('bndistrict');
             $table->timestamps();
         });
     }

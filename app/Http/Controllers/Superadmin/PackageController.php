@@ -5,7 +5,6 @@ use App\Models\Package;
 use App\Models\Merchant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Kamaln7\Toastr\Facades\Toastr;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;

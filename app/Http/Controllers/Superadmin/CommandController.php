@@ -4,16 +4,21 @@ namespace App\Http\Controllers\Superadmin;
 
 use config;
 use App\Models\Blog;
+use App\Models\Thana;
+use App\Models\Country;
+use App\Models\District;
+use App\Models\Division;
 use App\Models\Medicine;
+use App\Helpers\CommonFx;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Kamaln7\Toastr\Facades\Toastr;
 use App\Models\Medicineinformation;
+use Flasher\Prime\FlasherInterface;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\URL;
 use App\Http\Controllers\Controller;
-use App\Models\Country;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cache;
 use Database\Seeders\PermissionSeeder;
 use Illuminate\Support\Facades\Artisan;
@@ -29,107 +34,118 @@ class CommandController extends Controller
         
        return view('superadmin.command.index',['pageConfigs' => $pageConfigs]);
     }
-public function cacheclear () {
+public function cacheclear (FlasherInterface $flasher) {
             
         Artisan::call('view:clear');
         Artisan::call('cache:clear');
-        Toastr::success("All Cache Clear", "Done");
+       
+        $flasher->addSuccess('All Cache Clear');
         return Redirect::to('superadmin/commandlist');
        
 }
-public function databasecacheclear () {
+public function databasecacheclear (FlasherInterface $flasher) {
    
     Cache::flush();
-        Toastr::success("All Database Cache Clear", "Done");
+       
+        $flasher->addSuccess('All Database Cache Clear');
         return Redirect::to('superadmin/commandlist');
        
 }
-public function databasebackupclear () {
+public function databasebackupclear (FlasherInterface $flasher) {
     Artisan::call('backup:clean');
-        Toastr::success("All Backup Data Clear", "Done");
+      
+        $flasher->addSuccess('All Backup Data Clear');
         return Redirect::to('superadmin/commandlist');
        
 }
-public function routerclear () {
+public function routerclear (FlasherInterface $flasher) {
     Artisan::call('route:clear');
-        Toastr::success("All Router Data Clear", "Done");
+      
+        $flasher->addSuccess('All Router Data Clear');
         return Redirect::to('superadmin/commandlist');
        
 }
-public function queueclear () {
+public function queueclear (FlasherInterface $flasher) {
     Artisan::call('queue:clear');
-        Toastr::success("All Queue Data Clear", "Done");
+     
+        $flasher->addSuccess('All Queue Data Clear');
         return Redirect::to('superadmin/commandlist');
        
 }
-public function eventclear () {
+public function eventclear (FlasherInterface $flasher) {
     Artisan::call('event:clear');
-        Toastr::success("All Event Data Clear", "Done");
+     
+        $flasher->addSuccess('All Event Data Clear');
         return Redirect::to('superadmin/commandlist');
        
 }
-public function telescopeclear () {
+public function telescopeclear (FlasherInterface $flasher) {
    // Artisan::call('sitemonitor:clear');
  
    DB::table('telescope_entries')->delete();
       DB::table('telescope_entries_tags')->delete();
         DB::table('telescope_monitoring')->delete();
    
-        Toastr::success("All Telescope Data Clear", "Done");
+     
+        $flasher->addSuccess('All Telescope Data Clear');
         return Redirect::to('superadmin/commandlist');
        
 }
-public function configclear () {
+public function configclear (FlasherInterface $flasher) {
     Artisan::call('config:clear');
-        Toastr::success("All Config Data Clear", "Done");
+    $flasher->addSuccess('All Config Data Clear');
         return Redirect::to('superadmin/commandlist');
        
 }
-public function cacheall () {
+public function cacheall (FlasherInterface $flasher) {
     Artisan::call('view:cache');
   Artisan::call('config:cache');
        Artisan::call('event:cache');
      Artisan::call('route:cache');
-    Toastr::success("All Cache ", "Done");
+ 
+    $flasher->addError('All Cache');
     return Redirect::to('superadmin/commandlist');
    
 }
 
-public function databckup () {
+public function databckup (FlasherInterface $flasher) {
       Artisan::call('backup:run --only-db');
-   Toastr::success("All Databckup ", "Done");
+    $flasher->addSuccess('All Databckup');
     return Redirect::to('superadmin/commandlist');
    
 
 }
-public function queuework () {
+public function queuework (FlasherInterface $flasher) {
       Artisan::call('queue:work');
-   Toastr::success("All Queuework Start", "Done");
+ 
+   $flasher->addSuccess('All Queuework Start');
     return Redirect::to('superadmin/commandlist');
    
 }
 
-public function migratedata () {
+public function migratedata (FlasherInterface $flasher) {
     Artisan::call('migrate',
  array(
    '--path' => 'database/migrations',
    '--database' => 'mysql',
    '--force' => true));
- Toastr::success("All Migrate Work", "Done");
+
+ $flasher->addSuccess('All Migrate Work');
   return Redirect::to('superadmin/commandlist');
  
 }
-public function dbseeder(){
+public function dbseeder(FlasherInterface $flasher){
     Artisan::call('db:seed', [
         '--class' => PermissionSeeder::class
     ]);
-    Toastr::success("All Seeding Work", "Done");
+   
+    $flasher->addSuccess('All Seeding Work');
   return Redirect::to('superadmin/commandlist');
 }
 
 
-public function addcountry(){
-    $country=\App\Helpers\CommonFx::Country();
+public function addcountry(FlasherInterface $flasher){
+    $country=CommonFx::Country();
   
     foreach( $country as $can ){
       $list = new Country();
@@ -138,9 +154,72 @@ public function addcountry(){
         
 
     }
-    
-    Toastr::success("All Seeding Work", "Done");
-  return Redirect::to('superadmin/commandlist');
+    $flasher->addSuccess('All Country Create Successfully');
+  return Redirect::to('superadmin/autolocation');
+}
+public function adddivision(FlasherInterface $flasher){
+    $info = Http::get('https://bdapis.herokuapp.com/api/v1.1/divisions');
+    $datas = $info->json();
+foreach (($datas['data']) as $user) {
+        // dd( $user['_id']);
+           Division::create(['division' => $user['division'],
+           'slug' => $user['_id'],
+           'country_id' => '61988ae26e6b0000eb0040e2',
+            'bndivision' => $user['divisionbn'],
+                    
+        ]);
+            } 
+      
+    $flasher->addSuccess('All Division Create Successfully');
+  return Redirect::to('superadmin/autolocation');
 }
 
+public function adddistrict($id,FlasherInterface $flasher){
+    $info = Http::get('https://bdapis.herokuapp.com/api/v1.1/division/'.$id);
+    $getdivision=Division::whereslug($id)->first();
+    if($getdivision){
+
+ 
+    $datas = $info->json();
+   // dd($datas['data']);
+   
+foreach (($datas['data']) as $user) {
+        // dd( $user['_id']);
+         $district=  District::create(['division_id' => $getdivision['_id'],
+           'slug' => CommonFx::make_slug($user['district']),
+           'district' =>$user['district'],
+           'bndistrict' => CommonFx::make_slug($user['district']),
+          
+        ]);
+if($district){
+
+    foreach (($user['upazilla']) as $u) {
+    Thana::create(['district_id' => $district['_id'],
+    'slug' => CommonFx::make_slug($u),
+    'thana' =>$u,
+    'bnthana' => CommonFx::make_slug($u),
+]);
+}
+}
+            } 
+      
+    $flasher->addSuccess('Division District Area Create Successfully');
+  return Redirect::to('superadmin/autolocation');
+}
+else{
+    $flasher->addSuccess('Sorry  Divison Info Not found');
+    return Redirect::to('superadmin/autolocation');
+}
+}
+public function dropalldata(FlasherInterface $flasher){
+ Country::truncate();
+ Division::truncate();
+ District::truncate();
+ Thana::truncate();
+      
+
+  
+  $flasher->addSuccess('All Location Data Delete  Successfully');
+return Redirect::to('superadmin/autolocation');
+}
 }

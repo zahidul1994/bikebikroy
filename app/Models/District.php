@@ -1,12 +1,11 @@
 <?php
-
 namespace App\Models;
-use Illuminate\Database\Eloquent\Model;
+use Jenssegers\Mongodb\Eloquent\Model; //for use mongodb
 
 class District extends Model
 {
     protected $fillable = [
-        'id','division_id','district'
+        'id','division_id','district','slug','bndistrict'
      ];
      
      public function division()

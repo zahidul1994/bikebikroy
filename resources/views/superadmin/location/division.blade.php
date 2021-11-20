@@ -1,5 +1,5 @@
 @extends('layouts.superadmin')
-@section('title','Package List')
+@section('title','Division List')
 @section('page-style')
 
 <link href="https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.min.css" rel="stylesheet">
@@ -11,7 +11,7 @@
     <div class="row">
         <div class="col md-7"></div>
         <div class="col md-5 mb-2 text-end"> <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#Packagemodal">
-            Create Package
+            Create Divison
           </button></div>
     
         <table id="dataTable" class="table display table-striped  bordered nowrap"
@@ -20,11 +20,9 @@
 
             <tr>
                 <td>SL</td>
-                <td>Package</td>
-                <td>Price</td>
-                <td>Expiry Day</td>
-                <td>Description</td>
-                <td>Action</td>
+                <td>Name</td>
+                <td>Bn Name</td>
+               <td>Action</td>
                </tr>
         </thead>
         <tbody>
@@ -45,32 +43,23 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Create Package</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Create Division </h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
          </div>
         <h5> @include('errors.ajaxformerror')</h5>
         <div class="modal-body">
             
             {!! Form::open(['url' => 'superadmin/createpackage', 'class' => 'form', 'id' => 'ccccc']) !!}
-                {!! Form::hidden('packageid', '', ['id' => 'packageid']) !!}
-            <label for="packagename" class="form-label">Package Name *</label>
+                {!! Form::hidden('divisionid', '', ['id' => 'divisionid']) !!}
+            <label for="divisionname" class="form-label">Division Name English *</label>
             <div class="input-group">
-                {!! Form::text('packagename', null, ['id' => 'packagename', 'class' => 'form-control  mb-1']) !!}
+                {!! Form::text('divisionname', null, ['id' => 'divisionname', 'class' => 'form-control  mb-1']) !!}
             </div> 
-            <label for="packageprice" class="form-label">Package Price *</label>
+            <label for="bndivisionname" class="form-label">Division Name Bangla *</label>
             <div class="input-group">
-                {!! Form::number('packageprice', null, ['id' => 'packageprice', 'class' => 'form-control  mb-1']) !!}
-            </div>
-            <label for="expiryday" class="form-label">Expiry Day *</label>
-            <div class="input-group">
-                {!! Form::number('expiryday', null, ['id' => 'expiryday', 'class' => 'form-control  mb-1']) !!}
-            </div>
-           
-            <label for="description" class="form-label">Description  </label>
-            <div class="input-group">
-                {!! Form::text('description', null, ['id' => 'description', 'class' => 'form-control  mb-1']) !!}
-            </div>
-        </div>
+                {!! Form::text('bndivisionname', null, ['id' => 'bndivisionname', 'class' => 'form-control  mb-1']) !!}
+            </div> 
+                </div>
         <div class="modal-footer">
            
             <input type="button" id="addBtn" value="Save Payby" class="btn btn-primary">
@@ -103,7 +92,7 @@ $("#formerrors").hide();
      
             ajax: {
                
-                url: "{{ url('superadmin/packagelist') }}",
+                url: "{{ url('superadmin/divisionlist') }}",
 
             },
 
@@ -119,21 +108,16 @@ $("#formerrors").hide();
 
 
                 {
-                    data: 'packagename',
+                    data: 'division',
                   
                 },
 
                 {
-                    data: 'packageprice',
+                    data: 'bndivision',
                    
                 },
 
-                {
-                    data: 'expiryday',
-                },
-                 {
-                    data: 'description',
-                },
+                
 
                 {
                     
@@ -152,7 +136,7 @@ $("#formerrors").hide();
             if (!confirm('Sure?')) return;
             $id = $(this).attr('rid');
             //console.log($roomid);
-            $info_url = url + '/superadmin/deletepackage/' + $id;
+            $info_url = url + '/superadmin/deletedivision/' + $id;
             $.ajax({
                 url: $info_url,
                 method: "DELETE",
@@ -162,7 +146,7 @@ $("#formerrors").hide();
                     if (data) {
                         Swal.fire({
                             icon: 'warning',
-                            title: "Package Delete Successfully",
+                            title: "Division Delete Successfully",
                                 timer: 2000,
                                 showConfirmButton: false,
                                 });
@@ -181,14 +165,12 @@ $("#formerrors").hide();
 if ($(this).val() == 'Save') {
 
 $.ajax({
-    url:"{{ url('/superadmin/createpackage') }}",
+    url:"{{ url('/superadmin/createdivision') }}",
     method: "POST",
     data: {
-        packagename: $("#packagename").val(),
-        packageprice: $("#packageprice").val(),
-        expiryday: $("#expiryday").val(),
-      complaintitle: $("#complaintitle").val(),
-      description: $("#description").val(),
+        division: $("#divisionname").val(),
+        bndivision: $("#bndivisionname").val(),
+        
         
 
     },
@@ -196,7 +178,7 @@ $.ajax({
         if (d.success) {
             Swal.fire({
                 icon: 'success',
-               title: "Package Create Successfully",
+               title: "Division Create Successfully",
                 timer: 2000,
                 showConfirmButton: false,
                 });
@@ -227,21 +209,18 @@ $("#Packagemodal").on('click', '#addBtn', function() {
 if ($(this).val() == 'Update') {
 
 $.ajax({
-    url: url + '/superadmin/updatepackage/' + $("#packageid").val(),
+    url: url + '/superadmin/updatedivision/' + $("#divisionid").val(),
     method: "PUT",
     type: "PUT",
     data: {
-        packagename: $("#packagename").val(),
-        packageprice: $("#packageprice").val(),
-        expiryday: $("#expiryday").val(),
-      complaintitle: $("#complaintitle").val(),
-      description: $("#description").val(),
+        division: $("#divisionname").val(),
+        bndivision: $("#bndivisionname").val(),
     },
     success: function(d) {
         if (d.success) {
             Swal.fire({
             icon: 'warning',
-            title: "Package Update Successfully",
+            title: "Division Update Successfully",
                 timer: 2000,
                 showConfirmButton: false,
                 });
@@ -267,9 +246,9 @@ $.ajax({
 //Edit shift
 $("#dataTable").on('click', '#editBtn', function() {
 
-$packageid = $(this).attr('rid');
+$divisionid = $(this).attr('rid');
 
-$info_url = url + '/superadmin/editpackage/' + $packageid ;
+$info_url = url + '/superadmin/editdivision/' + $divisionid ;
 //console.log($info_url);
 // return;
 $.get($info_url, {}, function(d) {
@@ -291,11 +270,9 @@ $("#Packagemodal").modal('show');
 //form populatede
 
 function populateForm(data) {
-$("#packagename").val(data.packagename);
-$("#packageprice").val(data.packageprice);
-$("#expiryday").val(data.expiryday);
-$("#description").val(data.description);
-$("#packageid").val(data._id);
+$("#divisionname").val(data.division);
+$("#bndivisionname").val(data.bndivision);
+$("#divisionid").val(data._id);
 $("#addBtn").val('Update');
 
 

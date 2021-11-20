@@ -68,7 +68,7 @@ Route::group([ 'prefix'=>'superadmin',
         Route::post('impotercustomer', 'DashboardController@customerimporter');
         Route::post('deletenotification', 'DashboardController@deletenotification');
         Route::post('seennotification', 'DashboardController@seennotification');
-
+        Route::get('autolocation','DashboardController@autolocation');
 
 
   //package  Start
@@ -167,11 +167,9 @@ Route::get('editcountry/{id}','CountryController@edit');
  
  
  Route::get('divisionlist','DivisionController@index');
-Route::post('searchdivision','DivisionController@search');
-Route::get('createdivision','DivisionController@create');
-Route::post('createdivision','DivisionController@store');
+ Route::post('createdivision','DivisionController@store');
 Route::get('editdivision/{id}','DivisionController@edit');
- Route::patch('updatedivision/{id}','DivisionController@update');
+ Route::put('updatedivision/{id}','DivisionController@update');
  Route::delete('deletedivision/{id}','DivisionController@destroy');
 
 
@@ -205,7 +203,11 @@ Route::post('searchthana', 'ThanaController@searchblog');
 
 //Sitemap Start 
 
+ 
  Route::get('addcountry','CommandController@addcountry');
+ Route::get('adddivision','CommandController@adddivision');
+ Route::get('adddistrict/{id}','CommandController@adddistrict');
+ Route::get('dropalldata','CommandController@dropalldata');
  Route::get('commandlist','CommandController@index');
  Route::get('cacheclear','CommandController@cacheclear');
  Route::get('databasebackupclear','CommandController@databasebackupclear');
