@@ -177,6 +177,7 @@ return [
         Milon\Barcode\BarcodeServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Jenssegers\Mongodb\MongodbServiceProvider::class,
+        Laravel\Socialite\SocialiteServiceProvider::class,
     ],
 
     /*
@@ -239,6 +240,7 @@ return [
        'SEO' => Artesaos\SEOTools\Facades\SEOTools::class,
         'Share' => Jorenvh\Share\ShareFacade::class,
         'Flasher' => Flasher\Laravel\Facade\Flasher::class,
+        'Socialite' => Laravel\Socialite\Facades\Socialite::class,
         
     ],
 

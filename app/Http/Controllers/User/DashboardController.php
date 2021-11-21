@@ -23,17 +23,10 @@ class DashboardController extends Controller
     public function index()
     { 
        
-        $pageConfigs = ['navbarLarge' => false];
-
-           
-            $user=User::whereadmin_id(Auth::id())->select('admin_id','id','status')->get(); 
-       
-      
-        $contact= Contact::whereadmin_id(Auth::id())->select('admin_id','id','status')->get();
-        $smsinfo= Smssent::whereadmin_id(Auth::id())->select('admin_id','id','blance','smsrate')->first();
+       ;
      
 
-       return view('user.dashboard',['pageConfigs' => $pageConfigs], compact('user','contact','smsinfo'));
+       return view('user.dashboard');
     }
 
     /**

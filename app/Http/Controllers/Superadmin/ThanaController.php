@@ -1,92 +1,128 @@
 <?php
 
 namespace App\Http\Controllers\Superadmin;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\Http\Request;
 use App\Models\Thana;
+use App\Helpers\CommonFx;
 use App\Models\District; 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Http;
-use Kamaln7\Toastr\Facades\Toastr;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Validator;
+use Yajra\DataTables\Contracts\DataTable;
+use Illuminate\Pagination\LengthAwarePaginator;
+
 class ThanaController extends Controller
 {
-    public function index(){
+
+  public function index(){
+// dd(Thana::with('district')->latest()->get());
+    if (request()->ajax()) {
+      return datatables()->of(Thana::with('district')->latest()->get())
+        ->addColumn('action', function ($data) {
+          $button = '<button title="Edit Division" id="editBtn" style="border:0; background: none; padding: 0 !important"   rid="' . $data->_id . '" class="btn-md"><i class="far fa-edit"></i></button>';
+          $button .= '&nbsp;&nbsp;';
+         $button .= '<button type="button" style="border:0; background: none; padding: 0 !important"  title="Delete"   id="deleteBtn" rid="' . $data->_id . '" class="btn-sm btn-warning"><i class="fas fa-trash"></i></button>';
+          return $button;
+        })
      
-        $pageConfigs = ['pageHeader' => false, 'isFabButton' => false];
-            $thana=Thana::latest()->paginate(30);
-           // dd($thana);exit;
-            return view('superadmin.thana.index')->with('thanas',$thana)->with('pageConfigs',$pageConfigs)->with('i', (request()->input('page', 1) - 1) * 30);
-        }
-      
-      
-       public function create(){
-     $breadcrumbs = [
-            ['link' => "superadmin", 'name' => "Home"], ['link' => "superadmin/thanalist", 'name' => "Thana"], ['name' => "Create"],
-        ];
-          $pageConfigs = ['pageHeader' => true, 'isFabButton' => false];
-        $district=District::pluck('district','id');
-     $pageConfigs = ['pageHeader' => true, 'isFabButton' => false];
-        
-        return view('superadmin.thana.create', ['pageConfigs' => $pageConfigs], ['breadcrumbs' => $breadcrumbs])->with('districts',$district);
-      
-        }
-      
-      
-      public function store(Request $request){
-        // dd($request->all());exit;
-          $Thanainfo=explode(",",$request->thana);
-         foreach($Thanainfo as $than){
-          $div = new Thana;
-          $div->district_id =$request->district_id;
-          $div->thana = trim($than);
-          $div->save();
-      }
-      if($div->save()){
-      Toastr::success("Thana Create Successfully", "Well Done");
-                return Redirect::to('superadmin/thanalist'); 
-      }
-      else{
-          Toastr::warning("Thana Create Fail", "Sorry");
-           return Redirect::to('superadmin/thanalist'); 
-      }
+    ->addIndexColumn()
+        ->rawColumns(['action'])
+        ->make(true);
+    }
+    $breadcrumbs = [
+      ['link' => "superadmin/dashboard", 'name' => "Dashboard"], ['link' => "superadmin/districtlist", 'name' => "Thana"],
+  ];
+  
+    return view('superadmin.location.thana')->with('breadcrumbs', $breadcrumbs);
+   
+    
+  
+  }
+
+  public function store(Request $request)
+  {
+    $validator = Validator::make($request->all(), [
+     'district_id' => 'required',
+     'thana' => 'required|min:3|max:190|unique:thanas',
+      'bnthana' => 'required',
+      ]);
+         if ($validator->fails()) {
+
+
+          return response()->json([
+                  'success' => false,
+              'errors' => $validator->errors()->all()
+              ]);
+      } else {
+
+
+    $div = new Thana;
+    $div->superadmin_id = Auth::id();
+    $div->district_id = trim($request->district_id);
+    $div->bnthana = trim($request->bnthana);
+    $div->slug = CommonFx::make_slug($request->thana);
+    $div->thana = trim($request->thana);
+    $div->save();
+
+    if ($div->save()) {
           
-      }
+    return response()->json(['success' => true]);
+  } else {
+ 
 
+      return response()->json(['success' => false]);
+  }
+}
+  }
 
-      public function edit($id)
-      {
-        //  dd($id);
-           $breadcrumbs = [
-              ['link' => "superadmin", 'name' => "Home"], ['link' => "superadmin/thanalist", 'name' => "Thana"], ['name' => "Edit"],
-          ];
-          //Pageheader set true for breadcrumbs
-          $pageConfigs = ['pageHeader' => true, 'isFabButton' => false];
-          $district=District::pluck('district','id');
-          $thanainfo=Thana::find($id);
-         return view('superadmin.thana.edit', ['pageConfigs' => $pageConfigs], ['breadcrumbs' => $breadcrumbs])->with('districtinfo',$district)->with('thana',$thanainfo);
-      }
-  
-  
+  public function edit($id)
+  {
+    $info = Thana::find($id);
+return response()->json($info);
+  }
+
   
       public function update(Request $request,$id){
-          $this->validate($request,[
-         'district_id' => 'required',
-         'thana' => 'required|min:3|max:190|unique:thanas,thana,'.$id,
-  
-         ]);
-           $div = Thana::find($id);
-           $div->district_id =$request->district_id;
-           $div->thana = trim($request->thana);
-           $div->save();
+
+        $validator = Validator::make($request->all(), [
+          'district_id' => 'required',
+          'thana' => 'required|min:3|max:190|unique:thanas,thana,'.$id,
+           'bnthana' => 'required',
+           ]);
+              if ($validator->fails()) {
+     
+     
+               return response()->json([
+                       'success' => false,
+                   'errors' => $validator->errors()->all()
+                   ]);
+           } else {
+     
+     
+         $div =Thana::find($id);
+         $div->superadmin_id = Auth::id();
+         $div->district_id = trim($request->district_id);
+         $div->bnthana = trim($request->bnthana);
+         $div->slug = CommonFx::make_slug($request->thana);
+         $div->thana = trim($request->thana);
+         $div->save();
+     
+         if ($div->save()) {
+               
+         return response()->json(['success' => true]);
+       } else {
       
-       if($div->save()){
-       Toastr::success("Thana Update Successfully", "Well Done");
-                 return Redirect::to('superadmin/thanalist'); 
+     
+           return response()->json(['success' => false]);
        }
-       else{
-           Toastr::warning("Thana Update Fail", "Sorry");
-            return Redirect::to('superadmin/thanalist'); 
-       }
+     }
+
+
+
+
+
+        
            
        }
   
@@ -96,12 +132,12 @@ class ThanaController extends Controller
        
            $divisioninfo=Thana::destroy($id);
           if($divisioninfo){
-            Toastr::success("Thana Delete Successfully", "Well Done");
-                 return Redirect::to('superadmin/thanalist'); 
+                  
+         return response()->json(['success' => true]);
           }
           else{
-            Toastr::warning("Thana Delete Fail", "Sorry");
-            return Redirect::to('superadmin/thanalist'); 
+                  
+         return response()->json(['success' => false]);
           }
            }
   

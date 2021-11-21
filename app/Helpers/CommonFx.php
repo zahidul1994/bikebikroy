@@ -280,7 +280,7 @@ public static function Country(){
       'ZW'=>'ZIMBABWE');
 }
 public static function Countryname(){
-return Country::pluck('countryname','id');
+return Country::pluck('countryname','_id');
 
 }
 public static function Divisionname(){
@@ -317,7 +317,7 @@ public static function Divisionname(){
             }
         
         public static function Districtname(){
-        return District::pluck('district','id');
+        return District::pluck('district','_id');
         
         }
         public static function Connect(){

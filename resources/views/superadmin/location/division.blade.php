@@ -230,6 +230,13 @@ $.ajax({
 
 
         }
+        else {
+            $.each(d.errors, function(key, value) {
+                $('#formerrors').show();
+                $('#formerrors ul').append('<li>' + value +
+                '</li>');
+            });
+        }
     },
     error: function(d) {
         console.log(d);

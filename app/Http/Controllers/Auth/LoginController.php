@@ -11,6 +11,7 @@ use Flasher\Prime\FlasherInterface;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Lang;
+use Laravel\Socialite\Facades\Socialite;
 use App\Notifications\Superadminnotification;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
@@ -47,6 +48,7 @@ class LoginController extends Controller
         $this->middleware('guest:admin')->except('logout');
         $this->middleware('guest:customer')->except('logout');
         $this->middleware('guest:superadmin')->except('logout');
+        // $this->middleware('guest:user')->except('logout');
     }
 
     // Login
@@ -65,6 +67,13 @@ class LoginController extends Controller
         return view('auth.loginuser', [
             'pageConfigs' => $pageConfigs
         ]);
+    }
+  public function customloginForm()
+    {
+       
+
+        // return view('auth.customlogin');
+        return view('auth.frontendlogin');
     }
 
 
@@ -137,8 +146,7 @@ class LoginController extends Controller
     {
 
         if ($request->user == 'superadmin') {
-
-            $info = Superadmin::find(Auth::guard('superadmin')->user()->_id)->update(array('remember_token' => null));
+               $info = Superadmin::find(Auth::guard('superadmin')->user()->_id)->update(array('remember_token' => null));
 
             if ($info) {
                 $this->guard()->logout();
@@ -159,15 +167,13 @@ class LoginController extends Controller
                 return $this->loggedOut($request) ?: redirect('/login/admin');
             }
         } elseif ($request->user == 'user') {
-            $info = User::find(Auth::id())->update(array('remember_token' => null));
-
-            if ($info) {
+           
                 $this->guard()->logout();
 
                 $request->session()->invalidate();
 
-                return $this->loggedOut($request) ?: redirect('/login/user');
-            }
+                return $this->loggedOut($request) ?: redirect('login');
+            
         } elseif ($request->user == 'customer') {
             //$info = Customer::find(Auth::id())->update(array('remember_token' => null));
 
@@ -297,4 +303,31 @@ class LoginController extends Controller
         }
         return back()->withInput($request->only('loginid', 'remember'));
     }
+
+    public function socialLogin($social)
+    {
+        return Socialite::driver($social)->redirect();
+    }
+
+    public function handleProviderCallback($social)
+    {
+        $userSocial = Socialite::driver($social)->user();
+        
+        $user = User::where(['email' => $userSocial->getEmail()])->first();
+        if($user){
+            Auth::login($user);
+            return redirect()->intended('/');
+        }else{
+           
+          $user= User::create([
+                'name' => $userSocial->getName(),
+                'email' =>  $userSocial->getEmail(),
+                'status' =>1
+            ]);
+            Auth::login($user);
+        }
+    }
+
+
+
 }

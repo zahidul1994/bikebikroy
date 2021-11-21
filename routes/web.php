@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use UniSharp\LaravelFilemanager\Lfm;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\LanguageController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -28,7 +29,9 @@ Route::group(['prefix'=> 'filemanager', 'middleware'=> ['auth:superadmin,admin']
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/login/{social}','Auth\LoginController@socialLogin')->where('social','twitter|facebook|linkedin|google|github|bitbucket');
 
+Route::get('/login/{social}/callback','Auth\LoginController@handleProviderCallback')->where('social','twitter|facebook|linkedin|google|github|bitbucket');
 //gobal location 
 Route::get('/location', 'OnchangeController@index');
 Route::get('getdistrict/{id}', 'OnchangeController@district');
@@ -192,12 +195,11 @@ Route::get('editdistrict/{id}','DistrictController@edit');
 //Thana Start 
 
 Route::get('thanalist','ThanaController@index');
-Route::get('createthana','ThanaController@create');
 Route::post('createthana','ThanaController@store');
 Route::get('editthana/{id}','ThanaController@edit');
  Route::patch('updatethana/{id}','ThanaController@update');
- Route::get('deletethana/{id}','ThanaController@destroy');
-Route::post('searchthana', 'ThanaController@searchblog');
+ Route::delete('deletethana/{id}','ThanaController@destroy');
+
 
 //Thana  End
 
@@ -269,4 +271,22 @@ Route::post('sendsmscustomer','CustomerController@sendsmscustomer');
 
 );
 
+Route::get('login','Auth\Lof@index');
+Route::post('/login', 'Auth\LoginController@adminLogin');
+Route::get('/login', 'Auth\LoginController@customloginForm');
+Route::group([ 'prefix'=>'user',
+    'namespace'=>'User',
+    'middleware'=> 'auth'
 
+    ], function() {
+        Route::get('dashboard', 'DashboardController@index');
+        Route::get('importcustomer', 'DashboardController@impotercustomer');
+        Route::post('impotercustomer', 'DashboardController@customerimporter');
+        Route::post('deletenotification', 'DashboardController@deletenotification');
+        Route::post('seennotification', 'DashboardController@seennotification');
+        Route::get('autolocation','DashboardController@autolocation');
+
+
+    }
+
+);

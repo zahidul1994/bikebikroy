@@ -1,15 +1,16 @@
 <?php
 
 namespace App\Http\Controllers\Superadmin;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\Http\Request;
-use App\Models\Division;
 use App\Models\District;
-use Illuminate\Support\Facades\Validator;
+use App\Models\Division;
+use App\Helpers\CommonFx;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Contracts\DataTable;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class DistrictController extends Controller
 {
@@ -49,8 +50,7 @@ class DistrictController extends Controller
                
                          return response()->json([
                                  'success' => false,
-               
-               
+                             
                                  'errors' => $validator->errors()->all()
                              ]);
                      } else {
@@ -59,6 +59,7 @@ class DistrictController extends Controller
                    $div = new District;
                    $div->superadmin_id = Auth::id();
                    $div->division_id = trim($request->division_id);
+                   $div->slug = CommonFx::make_slug($request->district);
                    $div->bndistrict = trim($request->bndistrict);
                    $div->district = trim($request->district);
                    $div->save();
@@ -107,6 +108,7 @@ class DistrictController extends Controller
        $div->superadmin_id = Auth::id();
        $div->division_id = trim($request->division_id);
        $div->bndistrict = trim($request->bndistrict);
+       $div->slug = CommonFx::make_slug($request->district);
        $div->district = trim($request->district);
        $div->save();
    

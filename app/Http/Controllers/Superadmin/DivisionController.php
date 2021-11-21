@@ -3,14 +3,16 @@
 namespace App\Http\Controllers\Superadmin;
 use App\Models\Country;
 use App\Models\Division;
+use App\Helpers\CommonFx;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Contracts\DataTable;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Facades\Validator;
+
 class DivisionController extends Controller
 {
     public function index(){
@@ -58,6 +60,7 @@ class DivisionController extends Controller
                      $div->division = trim($request->division);
                      $div->bndivision = trim($request->bndivision);
                      $div->country_id = '61988ae26e6b0000eb0040e2';
+                     $div->slug = CommonFx::make_slug($request->division);
                      $div->save();
                  
                      if ($div->save()) {
@@ -100,6 +103,7 @@ class DivisionController extends Controller
            $div->superadmin_id = Auth::id();
            $div->division = trim($request->division);
            $div->bndivision = trim($request->bndivision);
+           $div->slug = CommonFx::make_slug($request->division);
            $div->country_id = '61988ae26e6b0000eb0040e2';
            $div->save();
        

@@ -1,5 +1,5 @@
 @extends('layouts.superadmin')
-@section('title','District List')
+@section('title','Thana List')
 @section('page-style')
 
 <link href="https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.min.css" rel="stylesheet">
@@ -11,7 +11,7 @@
     <div class="row">
         <div class="col md-7"></div>
         <div class="col md-5 mb-2 text-end"> <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#Packagemodal">
-            Create District
+            Create Thana
           </button></div>
     
         <table id="dataTable" class="table display table-striped  bordered nowrap"
@@ -20,9 +20,9 @@
 
             <tr>
                 <td>SL</td>
-                <td>Division </td>
                 <td>District </td>
-                <td>Bn District</td>
+                <td>Thana </td>
+                <td>Bn Thana</td>
                <td>Action</td>
                </tr>
         </thead>
@@ -51,19 +51,19 @@
         <div class="modal-body">
             
             {!! Form::open(['url' => 'superadmin/createpackage', 'class' => 'form', 'id' => 'ccccc']) !!}
-                {!! Form::hidden('districtid', '', ['id' => 'districtid']) !!}
+                {!! Form::hidden('thanaid', '', ['id' => 'thanaid']) !!}
                
-            <label for="district" class="form-label">Select Division *</label>
+            <label for="district" class="form-label">Select District *</label>
             <div class="input-group">
-                {!!Form::select('division_id',CommonFx::Divisionname(),null, array('id'=>'division_id','required','class'=>'form-control','placeholder'=>'Select Division'))!!}
+                {!!Form::select('district_id',CommonFx::Districtname(),null, array('id'=>'district_id','required','class'=>'form-control','placeholder'=>'Select Division'))!!}
             </div>   
-            <label for="district" class="form-label">District Name English *</label>
+            <label for="thana" class="form-label">Thana Name English *</label>
               <div class="input-group">
-                {!! Form::text('district', null, ['id' => 'district', 'class' => 'form-control  mb-1']) !!}
+                {!! Form::text('thana', null, ['id' => 'thana', 'class' => 'form-control  mb-1']) !!}
             </div> 
-            <label for="bndistrict" class="form-label">District Name Bangla *</label>
+            <label for="bnthana" class="form-label">Thana Name Bangla *</label>
             <div class="input-group">
-                {!! Form::text('bndistrict', null, ['id' => 'bndistrict', 'class' => 'form-control  mb-1']) !!}
+                {!! Form::text('bndistrict', null, ['id' => 'bnthana', 'class' => 'form-control  mb-1']) !!}
             </div> 
                 </div>
         <div class="modal-footer">
@@ -98,7 +98,7 @@ $("#formerrors").hide();
      
             ajax: {
                
-                url: "{{ url('superadmin/districtlist') }}",
+                url: "{{ url('superadmin/thanalist') }}",
 
             },
 
@@ -114,17 +114,17 @@ $("#formerrors").hide();
 
 
                 {
-                    data: 'division.division',
-                   name: 'division.division'
+                    data: 'district.district',
+                   name: 'district.district'
                   
                 },
 
                 {
-                    data: 'district',
+                    data: 'thana',
                    
                 },
  {
-                    data: 'bndistrict',
+                    data: 'bnthana',
                    
                 },
 
@@ -147,7 +147,7 @@ $("#formerrors").hide();
             if (!confirm('Sure?')) return;
             $id = $(this).attr('rid');
             //console.log($roomid);
-            $info_url = url + '/superadmin/deletedistrict/' + $id;
+            $info_url = url + '/superadmin/deletethana/' + $id;
             $.ajax({
                 url: $info_url,
                 method: "DELETE",
@@ -157,7 +157,7 @@ $("#formerrors").hide();
                     if (data) {
                         Swal.fire({
                             icon: 'warning',
-                            title: "District Delete Successfully",
+                            title: "Thana Delete Successfully",
                                 timer: 2000,
                                 showConfirmButton: false,
                                 });
@@ -176,18 +176,18 @@ $("#formerrors").hide();
 if ($(this).val() == 'Save') {
 
 $.ajax({
-    url:"{{ url('/superadmin/createdistrict') }}",
+    url:"{{ url('/superadmin/createthana') }}",
     method: "POST",
     data: {
-        division_id: $("#division_id").val(),
-        district: $("#district").val(),
-        bndistrict: $("#bndistrict").val(),
+        district_id: $("#district_id").val(),
+        thana: $("#thana").val(),
+        bnthana: $("#bnthana").val(),
     },
     success: function(d) {
         if (d.success) {
             Swal.fire({
                 icon: 'success',
-               title: "District Create Successfully",
+               title: "Thana Create Successfully",
                 timer: 2000,
                 showConfirmButton: false,
                 });
@@ -203,8 +203,11 @@ $.ajax({
         }
     },
     error: function(d) {
-        // alert(d.message);
-        console.log(d);
+        $.each(d.errors, function(key, value) {
+                $('#formerrors').show();
+                $('#formerrors ul').append('<li>' + value +
+                '</li>');
+            });
     }
 
 });
@@ -218,19 +221,19 @@ $("#Packagemodal").on('click', '#addBtn', function() {
 if ($(this).val() == 'Update') {
 
 $.ajax({
-    url: url + '/superadmin/updatedistrict/' + $("#districtid").val(),
+    url: url + '/superadmin/updatethana/' + $("#thanaid").val(),
     method: "PATCH",
     type: "PATCH",
     data: {
-        division_id: $("#division_id").val(),
-        district: $("#district").val(),
-        bndistrict: $("#bndistrict").val(),
+        district_id: $("#district_id").val(),
+        thana: $("#thana").val(),
+        bnthana: $("#bnthana").val(),
     },
     success: function(d) {
         if (d.success) {
             Swal.fire({
             icon: 'warning',
-            title: "District Update Successfully",
+            title: "Thana Update Successfully",
                 timer: 2000,
                 showConfirmButton: false,
                 });
@@ -239,12 +242,6 @@ $.ajax({
 
 
 
-        }else {
-            $.each(d.errors, function(key, value) {
-                $('#formerrors').show();
-                $('#formerrors ul').append('<li>' + value +
-                '</li>');
-            });
         }
     },
     error: function(d) {
@@ -262,9 +259,9 @@ $.ajax({
 //Edit shift
 $("#dataTable").on('click', '#editBtn', function() {
 
-$districtid = $(this).attr('rid');
+$thanaid = $(this).attr('rid');
 
-$info_url = url + '/superadmin/editdistrict/' + $districtid ;
+$info_url = url + '/superadmin/editthana/' + $thanaid ;
 //console.log($info_url);
 // return;
 $.get($info_url, {}, function(d) {
@@ -286,10 +283,10 @@ $("#Packagemodal").modal('show');
 //form populatede
 
 function populateForm(data) {
-$("#division_id").val(data.division_id);
-$("#district").val(data.district);
-$("#bndistrict").val(data.bndistrict);
-$("#districtid").val(data._id);
+$("#district_id").val(data.district_id);
+$("#thana").val(data.thana);
+$("#bnthana").val(data.bnthana);
+$("#thanaid").val(data._id);
 $("#addBtn").val('Update');
 
 

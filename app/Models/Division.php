@@ -6,8 +6,9 @@ use Jenssegers\Mongodb\Eloquent\Model; //for use mongodb
 class Division extends Model
 {
     protected $fillable = [
-       'slug','division','bndivision','country_id'
+       'slug','division','bndivision','country_id',
     ];
+    protected $primaryKey = '_id';
     public function country()
     {
         return $this->belongsTo('App\Models\Country');

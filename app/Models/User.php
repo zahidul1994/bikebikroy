@@ -15,7 +15,7 @@ class User extends Authenticatable
  
         protected $dates = ['deleted_at'];
        
-		  protected $guard_name = 'admin';
+		//   protected $guard_name = 'admin';
         protected $fillable = ['admin_id',
             'username','phone','email','image','remember_token','status','password','id' ];
 
