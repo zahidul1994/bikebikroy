@@ -10,6 +10,7 @@ use App\Models\Division;
 use Illuminate\Http\Request;
 use Kamaln7\Toastr\Facades\Toastr;
 use App\Http\Controllers\Controller;
+use App\Models\Bikemodel;
 use App\Models\Payby;
 use App\Models\Payment;
 use App\Models\Smstype;
@@ -34,7 +35,11 @@ return response()->json([
         }
       
       
-       public function district($id){
+       public function getbikebrand($id){
+    return response()->json( Bikemodel::wherebikebrand_id($id)->select('_id','bikemodel')->get());
+
+    
+        }     public function district($id){
     return response()->json( District::wheredivision_id($id)->select('_id','district')->get());
 
     

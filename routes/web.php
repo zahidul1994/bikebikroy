@@ -38,6 +38,7 @@ Route::get('getdistrict/{id}', 'OnchangeController@district');
 Route::get('getthana/{id}', 'OnchangeController@thana');
 Route::get('getarea/{id}', 'OnchangeController@area');
 Route::get('gettpackageinfo/{id}', 'OnchangeController@package');
+Route::get('getbikebrand/{id}', 'OnchangeController@getbikebrand');
 Route::get('getcustomerinfo', 'OnchangeController@customerinfo');
 Route::get('gettsmstypeinfo/{id}', 'OnchangeController@smstype');
 Route::get('getpaymentmessage/{id}', 'OnchangeController@payment');
@@ -203,6 +204,29 @@ Route::get('editthana/{id}','ThanaController@edit');
 
 //Thana  End
 
+//bikebrandlist Start 
+
+Route::get('bikebrandlist','BikebrandController@index');
+Route::post('createbikebrand','BikebrandController@store');
+Route::get('editbikebrand/{id}','BikebrandController@edit');
+ Route::patch('updatebikebrand/{id}','BikebrandController@update');
+ Route::delete('deletebikebrand/{id}','BikebrandController@destroy');
+
+
+//bikebrandlist  End
+
+
+//bikemodellist Start 
+
+Route::get('bikemodellist','BikemodelController@index');
+Route::post('createbikemodel','BikemodelController@store');
+Route::get('editbikemodel/{id}','BikemodelController@edit');
+ Route::patch('updatebikemodel/{id}','BikemodelController@update');
+ Route::delete('deletebikemodel/{id}','BikemodelController@destroy');
+
+
+//bikemodel  End
+
 //Sitemap Start 
 
  
@@ -291,7 +315,8 @@ Route::group([ 'prefix'=>'user',
         Route::post('deletenotification', 'DashboardController@deletenotification');
         Route::post('seennotification', 'DashboardController@seennotification');
         Route::get('autolocation','DashboardController@autolocation');
-
+        //add sale
+        Route::resource('bikesale', 'BikesaleController');
 
     }
 

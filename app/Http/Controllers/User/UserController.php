@@ -1,14 +1,15 @@
 <?php
 namespace App\Http\Controllers\user;
 use App\Models\User;
-use Illuminate\Http\Request;
+use App\Helpers\CommonFx;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Hash;
-use Intervention\Image\Facades\Image;
+use Illuminate\Http\Request;
 use App\Mail\Foregatepasword;
-use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
@@ -58,6 +59,7 @@ class UserController extends Controller
              } else {
        User::find(Auth::id())->update([
            'fullname'=>$request->fullname,
+           'username'=>CommonFx::make_slug($request->fullname.Auth::id()),
            'division_id'=>$request->division,
            'thana_id'=>$request->thana,
            'district_id'=>$request->district,

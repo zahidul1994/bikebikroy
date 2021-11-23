@@ -45,6 +45,7 @@ class CreateUsersTable extends Migration
            $table->date('shopexpirydate')->nullable();
            $table->string('path')->nullable();
            $table->string('otp')->nullable();
+           $table->tinyInteger('status')->default(1);
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();

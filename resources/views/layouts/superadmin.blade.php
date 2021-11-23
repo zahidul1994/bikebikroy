@@ -66,25 +66,19 @@
                         </ul>
 
                     </li>
-                    <li><a href="calendar.html"><i class="fas fa-calendar-alt"></i> Calendar</a></li>
+                   
                     <li>
-                        <p class="page-menu mb-0"><i class="far fa-star"></i> Pages <i class="fas fa-angle-right menu-angle-four"></i>
+                        <p class="page-menu mb-0"><i class="far fa-star"></i> Brand And Model <i class="fas fa-angle-right menu-angle-four"></i>
 
 
                         </p>
 
                         <ul class="dash-main-menu page-toggle">
 
-                            <li><a href="login.html"><i class="far fa-circle"></i> Login</a></li>
+                            <li><a href="{{url('superadmin/bikebrandlist')}}"><i class="far fa-circle"></i>Bike Brand List</a></li>
+                            <li><a href="{{url('superadmin/bikemodellist')}}"><i class="far fa-circle"></i> Model List</a></li>
                             <li><a href="sign-up.html"><i class="far fa-circle"></i> Register</a></li>
-                            <li><a href="forget-password.html"><i class="far fa-circle"></i> Forget Password</a></li>
-                            <li><a href="404.html"><i class="far fa-circle"></i> 404 Error</a></li>
-                            <li><a href="500.html"><i class="far fa-circle"></i> 500 Error</a></li>
-                            <li><a href="blank-page.html"><i class="far fa-circle"></i> Blank Page</a></li>
-                             <li><a href="Gallery.html"><i class="far fa-circle"></i>Gallery</a></li>
-                               <li><a href="FAQ.html"><i class="far fa-circle"></i>FAQ</a></li>
-                            <li><a href="lock-screen.html"><i class="far fa-circle"></i> Lock Screen</a></li>
-                             <li><a href="coming-soon.html"><i class="far fa-circle"></i>Coming Soon</a></li>
+                           
 
                         </ul>
                     </li>
