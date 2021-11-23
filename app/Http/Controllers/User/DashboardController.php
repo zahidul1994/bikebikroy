@@ -23,10 +23,7 @@ class DashboardController extends Controller
     public function index()
     { 
        
-       ;
-     
-
-       return view('user.dashboard');
+          return view('user.dashboard');
     }
 
     /**
@@ -50,6 +47,16 @@ class DashboardController extends Controller
         auth()->user()->unreadNotifications->markAsRead();
       return response()->json(['success'=>true],201);
         
+        
+    }
+      public function addpostingview(){
+   if(Auth::user()->username==null){
+    return redirect()->intended('/user/profile');
+ 
+   }
+   else{
+    return view('user.dashboard');
+   }
         
     }
     

@@ -57,21 +57,17 @@
                  </ul>
                 </a>
              </div>
-            @if ($errors->has('status'))
-                                                           
-            <strong>{{ $errors->first('status') }}</strong>
         
-    @endif
 <form class="login-form"   method="POST" action='{{ url("login") }}' aria-label="{{ __('Login') }}">
 
 @csrf
             <div class="input-group mb-3">
                 <span class="input-group-text" id="basic-addon1">
                     <i class="far fa-user"></i>
-                </span>
-                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email"
-              value="{{ old('email') }}" required autocomplete="email" autofocus  placeholder="Email Address">
-            @error('email')
+                </span> 
+                <input id="email" type="text" class="form-control @error('phoneemail') is-invalid @enderror" name="phoneemail"
+              value="{{ old('phoneemail') }}" required autocomplete="email" autofocus  placeholder="Email Or Phone">
+            @error('phoneemail')
             <div class="invalid-feedback">
                 <small  role="alert">
                     {{ $message }}
@@ -96,21 +92,27 @@
               @enderror
                
             </div>
+            <h3 class="text-danger">  @if ($errors->has('status'))
+                                                           
+                <strong>{{ $errors->first('status') }}</strong>
+            
+        @endif</h3> 
             <input type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
             Remember Me  <br>
-            <button class="user-btn mt-2">
+            
+            <button class="user-btn mt-2" type="submit">
                 Login
             </button>
             <div class="row mt-5">
                 <div class="col-md-6">
-                    <a href="#">Sign Up</a>
+                    <a href="{{url('register')}}">Sign Up</a>
                 </div>
                 <div class="col-md-6">
                     <a href="#" class="text-danger">Forgot password? </a>
                 </div>
             </div>
 
-
+</form>
 
 
 

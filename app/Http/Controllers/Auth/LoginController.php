@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Auth;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Admin;
-use App\Models\Customer;
 use App\Models\Superadmin;
 use Illuminate\Http\Request;
 use Flasher\Prime\FlasherInterface;
@@ -71,9 +70,12 @@ class LoginController extends Controller
   public function customloginForm()
     {
        
-
-        // return view('auth.customlogin');
         return view('auth.frontendlogin');
+    }
+ public function customregisterForm()
+    {
+       
+        return view('auth.register');
     }
 
 
@@ -102,23 +104,17 @@ class LoginController extends Controller
         }
     }
 
-    public function adminverifyphone(Request $request)
+    public function userotpverify(Request $request,FlasherInterface $flasher)
     {
-        // dd($request->all());
-        $check = Admin::wherephone($request->phone)->whereotp($request->code)->first();
+       
+        $check = User::wherephone($request->phone)->whereotp((int)$request->code)->first();
+      //  dd($check);
         if ($check) {
-            $check->update(array('email_verified_at' => Carbon::now(), 'status' => 1));
-            return redirect('/login/admin')
-                ->withErrors([
-                    'status' => 'Phone Number Verified, Please Login'
-                ]);
-
-            $data = [
-                'superadminboady' => $check['name'] . ' Verify Email Successfully With Code',
-            ];
-
-
-            Superadmin::first()->notify(new Superadminnotification($data));
+            $check->update(array('email_verified_at' => Carbon::now(), 'status' => 1,'otp'=>null));
+            $flasher->addSuccess('Phone Number Verified, Please Login');
+            return redirect('/login');
+               
+           
         } else {
             return redirect()->back()
                 ->withErrors([
@@ -136,11 +132,8 @@ class LoginController extends Controller
     }
     public function showOTPveirfyForm()
     {
-        $pageConfigs = ['bodyCustomClass' => 'login-bg', 'isCustomizer' => false];
-
-        return view('auth.adminotpverify', [
-            'pageConfigs' => $pageConfigs
-        ]);
+     
+        return view('auth.otpverify');
     }
     public function logout(Request $request)
     {
@@ -273,20 +266,44 @@ class LoginController extends Controller
             'pageConfigs' => $pageConfigs
         ]);
     }
-    public function UserLogin(Request $request)
+    public function UserLogin(Request $request, FlasherInterface $flasher)
     {
-        // return $request->all();
-        $this->validate($request, [
-            'email'   => 'required|exists:users,email',
-            'password' => 'required|min:2|max:198'
-        ]);
+       // dd($request->all());
         $remember = (!empty($request->remember)) ? TRUE : FALSE;
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password], $remember)) {
-
-            Toastr::success("Welcome  Adminstration Panel");
-            return redirect()->intended('/user/dashboard');
+        $userinfo=User::where('phone', '=', $request->phoneemail)->first(); 
+       // dd($userinfo);
+        if($userinfo){
+            $token =Auth::attempt(['phone' => $request->phoneemail, 'password' => $request->password,'status'=>1],$remember);
+           // dd($token);    
+         if ($token) {
+              $flasher->addSuccess('Login Successfully');
+              return redirect()->intended('/');
         }
-        return back()->withInput($request->only('email', 'remember'));
+        else{
+           
+            $flasher->addError('Login Fail');
+            return back()->withErrors([
+                'status' => 'Your Email Or Phone Or Password Invaild'
+            ])->withInput($request->only('phoneemail', 'remember'));
+        }
+       
+        }
+        else{
+
+            $token=Auth::attempt(['email' => $request->phoneemail, 'password' => $request->password,'status'=>1],$remember);
+        if ($token) {
+            $flasher->addSuccess('Login Successfully');
+              return redirect()->intended('/');
+        }
+        else{
+          
+            $flasher->addError('Login Fail');
+            return back()->withErrors([
+                'status' => 'Your Email Or Phone Or Password Invaild'
+            ])->withInput($request->only('phoneemail', 'remember'));
+        }
+        }
+       
     }
     public function customerLogin(Request $request)
     {
@@ -320,9 +337,9 @@ class LoginController extends Controller
         }else{
            
           $user= User::create([
-                'name' => $userSocial->getName(),
+                'fullname' => $userSocial->getName(),
                 'email' =>  $userSocial->getEmail(),
-                'status' =>1
+                 'status' =>1
             ]);
             Auth::login($user);
         }

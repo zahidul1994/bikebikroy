@@ -272,16 +272,22 @@ Route::post('sendsmscustomer','CustomerController@sendsmscustomer');
 );
 
 Route::get('login','Auth\Lof@index');
-Route::post('/login', 'Auth\LoginController@adminLogin');
-Route::get('/login', 'Auth\LoginController@customloginForm');
+Route::post('login', 'Auth\LoginController@UserLogin');
+Route::get('login', 'Auth\LoginController@customloginForm');
+Route::get('register', 'Auth\LoginController@customregisterForm');
+Route::post('userregister', 'Auth\RegisterController@create');
+Route::get('otpverify/{id}', 'Auth\LoginController@showOTPveirfyForm');
+Route::post('userotpverify', 'Auth\LoginController@userotpverify');
 Route::group([ 'prefix'=>'user',
     'namespace'=>'User',
     'middleware'=> 'auth'
 
     ], function() {
         Route::get('dashboard', 'DashboardController@index');
-        Route::get('importcustomer', 'DashboardController@impotercustomer');
-        Route::post('impotercustomer', 'DashboardController@customerimporter');
+        Route::get('addposting', 'DashboardController@addpostingview');
+        Route::get('profile', 'UserController@index');
+        Route::put('updateemail', 'UserController@updateemail');
+        Route::patch('updateprofileinfo', 'UserController@updateprofileinfo');
         Route::post('deletenotification', 'DashboardController@deletenotification');
         Route::post('seennotification', 'DashboardController@seennotification');
         Route::get('autolocation','DashboardController@autolocation');

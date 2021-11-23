@@ -1,13 +1,16 @@
 <?php
 
 namespace App\Http\Controllers\Auth;
-
+use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
+use Illuminate\Http\Request;
+use Flasher\Prime\FlasherInterface;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Redirect;
 
 class RegisterController extends Controller
 {
@@ -50,9 +53,10 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'fullname' => ['required', 'string', 'max:198'],
+            'email' => ['max:198', 'unique:users'],
+            'phone' => ['required', 'digits:11', 'unique:users'],
+             'password' => ['required', 'string', 'min:8', 'max:40','confirmed'],
         ]);
     }
 
@@ -62,12 +66,22 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \App\Models\User
      */
-    protected function create(array $data)
+    protected function create(Request $request, FlasherInterface $flasher)
     {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
+        
+        $this->validator($request->all())->validate();
+    $info= User::create([
+            'fullname' => $request['fullname'],
+            'email' => strtolower(trim($request['email'])),
+            'phone' => $request['phone'],
+            'otp' =>mt_rand(10000, 99999) ,
+            'status' =>2,
+            'password' => Hash::make($request['password']),
         ]);
+        if($info){
+            $flasher->addSuccess('Registion Successfully Done, Please Verify With OPT');
+        return Redirect::to('otpverify/'.$request->phone);
+        
     }
+}
 }

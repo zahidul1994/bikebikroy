@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>@yield('title')</title>
   
     <link href="{{asset('dashboardassets/css/all.min.css')}}" rel="stylesheet">
    <link href="{{asset('dashboardassets/css/bootstrap.min.css')}}" rel="stylesheet">
@@ -26,11 +26,12 @@
 
 
     </div>
-
+<!--flash notification-->
+@flasher_render  
 
     <script src="{{asset('dashboardassets/js/jquery-3.6.0.min.js')}}"></script>
     <script src="{{asset('dashboardassets/js/popper.min.js')}}"></script>
    <script src="{{asset('dashboardassets/js/bootstrap.min.js')}}"></script>
       <script src="{{asset('dashboardassets/js/main.js')}}"></script>
-
+</body>
 </html>

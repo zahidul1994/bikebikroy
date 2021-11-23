@@ -9,9 +9,69 @@ use App\Mail\Foregatepasword;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Validator;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 
 class UserController extends Controller
 {
+    public function index()
+    { 
+       
+          return view('user.profile');
+    }
+    public function updateemail(Request $request){
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email|min:3|max:198|unique:users',
+                ]);
+                if ($validator->fails()) {
+       return response()->json([
+                         'success' => false,
+                     'errors' => $validator->errors()->all()
+                     ]);
+             } else {
+       $user=User::find(Auth::id())->update(['email'=>$request->email]);
+         
+           return response()->json([
+                    'success' => true,
+                     ], 201);
+              }
+       
+       
+        
+    }  
+    
+  
+    public function updateprofileinfo(Request $request){
+        //return response($request->all());
+        $validator = Validator::make($request->all(), [
+            'fullname' => 'required|min:3|max:198',
+            'division' => 'required',
+            'district' => 'required',
+            'thana' => 'required',
+                ]);
+                if ($validator->fails()) {
+       return response()->json([
+                         'success' => false,
+                     'errors' => $validator->errors()->all()
+                     ]);
+             } else {
+       User::find(Auth::id())->update([
+           'fullname'=>$request->fullname,
+           'division_id'=>$request->division,
+           'thana_id'=>$request->thana,
+           'district_id'=>$request->district,
+       ]);
+         
+           return response()->json([
+                    'success' => true,
+                     ], 201);
+              }
+       
+       
+        
+    }  
+    
     public function me(){
        $user=Auth::guard('api')->user();
           if($user){

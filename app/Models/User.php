@@ -17,7 +17,7 @@ class User extends Authenticatable
        
 		//   protected $guard_name = 'admin';
         protected $fillable = ['admin_id',
-            'username','phone','email','image','remember_token','status','password','id' ];
+            'username','phone','email','image','remember_token','status','password','otp','fullname','accounttpe','membertype','salertype','package_id','birthdate','division_id','district_id','thana_id','shop','shoptitle','shopdescripiton','googleloaction','saturday','sunday','monday','tuesday','wednesday','thuresday','friday','profilephoto','coverphoto','shopexpirydate','path','email_verified_at' ];
 
         protected $hidden = [
             'password', 'remember_token',

@@ -54,7 +54,7 @@
                                 @endguest
                        
                         <li class="nav-item">
-                            <button class="post-ur-ad">POST YOUR AD</button>
+                            <button class="post-ur-ad" id="Posting">POST YOUR AD</button>
                         </li>
 
                     </ul>
@@ -183,7 +183,7 @@
 
     <script type="text/javascript"> 
         // alert(55);
-    
+
         
                 var url = "{{URL::to('/')}}";
                 $.ajaxSetup({
@@ -192,7 +192,11 @@
                               }
                           });
                 
-             
+             $(document).ready(function () {
+                 $('#Posting').click(function() {
+                    window.location.href = url+'/user/addposting';
+             });
+             });
               </script>
                 @yield('page-script')
         </body>

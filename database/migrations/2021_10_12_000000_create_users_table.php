@@ -15,6 +15,7 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             // $table->id();
+            $table->unsignedInteger('admin_id')->nullable();
             $table->string('fullname');
             $table->string('username')->nullable();
             $table->string('phone')->nullable();
@@ -22,7 +23,7 @@ class CreateUsersTable extends Migration
             $table->string('membertype')->nullable();
             $table->string('salertype')->nullable();
             $table->unsignedInteger('package_id')->nullable();
-            $table->string('email')->unique();
+            $table->string('email')->nullable();
             $table->string('password');
            $table->date('birthdate')->nullable();
           $table->unsignedInteger('division_id')->nullable();
@@ -43,7 +44,7 @@ class CreateUsersTable extends Migration
            $table->string('coverphoto')->nullable();
            $table->date('shopexpirydate')->nullable();
            $table->string('path')->nullable();
-           $table->string('opt');
+           $table->string('otp')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
