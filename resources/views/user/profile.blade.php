@@ -1,4 +1,5 @@
-@extends('layouts.frontend')
+@extends('layouts.user')
+@section('title','User')
 @section('page-style')
 
 <link href="https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.min.css" rel="stylesheet">

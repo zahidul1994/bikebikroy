@@ -1,10 +1,12 @@
 <?php
 namespace App\Http\Controllers\user;
 use App\Models\User;
+use App\Models\Setting;
 use App\Helpers\CommonFx;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Mail\Foregatepasword;
+use App\Models\Userphoneverify;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -63,6 +65,8 @@ class UserController extends Controller
            'division_id'=>$request->division,
            'thana_id'=>$request->thana,
            'district_id'=>$request->district,
+           'package_id' =>Setting::value('defaultuserpackage_id'),
+           'salepost' =>Setting::value('defaultpostnumber'),
        ]);
          
            return response()->json([
@@ -93,13 +97,44 @@ class UserController extends Controller
         
     }
 
-    public function logout(Request $request){
-         Auth::guard('api')->logout();
-   
-       return response()->json([
-             'success' => true,
-              'message'=>'logout success'
-         ],201);
+    public function searchphonenumber(Request $request){
+        $info=Userphoneverify::whereuser_id(Auth::id())->wherephonenumber($request->number)->wherestatus(1)->first();
+        if($info){
+            return response()->json([
+                'success' => true,
+                 'message'=>'Verify Number'
+            ],201);
+        }
+      else{
+       $user= Userphoneverify::create([
+            'user_id'=>Auth::id(),
+             'status'=>0,
+             'phonenumber'=>$request->phone,
+             'otp'=>mt_rand(10000, 99999),
+             'expiredate'=>Date('y:m:d', strtotime('+60 days'))
+    ]);
+        $url = "http://66.45.237.70/api.php";
+        $number=$request->number;
+        $text=("Dear ". Auth::user()->fullname .','." Bikebikroy verify OTP ".$user->otp);
+       // dd($text);
+        $data= array(
+            'username'=>"bikebd",
+            'password'=>"QKR2SPFN",
+            'number'=>$number,
+            'message'=>$text
+            );
+        $ch = curl_init(); // Initialize cURL
+        curl_setopt($ch, CURLOPT_URL,$url);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $smsresult = curl_exec($ch);
+        $p = explode("|",$smsresult);
+        $sendstatus = $p[0];
+        return response()->json([
+            'success' => false,
+             'message'=>'Univerify Number'
+        ],401);
+      }
        
       
    }

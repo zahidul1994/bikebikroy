@@ -1,4 +1,5 @@
-@extends('layouts.frontend')
+@extends('layouts.user')
+@section('title','Bike Sale Form')
 @section('page-style')
 <link href="https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.min.css" rel="stylesheet">
 @endsection
@@ -53,7 +54,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="district_id" class="form-label">Select District  *</label>
-                                <select class="form-select" id="district_id" name="district_id">
+                                <select class="form-select" id="district_id" name="district_id" required>
                                     <option  value="">Select District *</option>
                                   </select>
                             </div>
@@ -90,8 +91,11 @@
                                   {!!Form::select('bikebrand_id',CommonFx::BikeBrand(),null, array('id'=>'bikebrand_id','required','class'=>'form-control','placeholder'=>'Select Brand'))!!}
                             </div>
                             <div class="col-md-6">
+                               
                                 <label for="inputState" class="form-label">Select Model  *</label>
-                                {!!Form::select('bikemodel_id',CommonFx::BikeModel(),null, array('id'=>'bikemodel_id','required','class'=>'form-control','placeholder'=>'Select Brand'))!!}
+                                <select class="form-select" id="bikemodel_id" name="bikemodel_id" required>
+                                    <option  value="">Select Model *</option>
+                                  </select>
                             </div>
 
                             <div class="col-12">
@@ -129,12 +133,40 @@
                                     </label>
                                 </div>
                             </div>
-                            <div class="col-12">
-                                <div class="form-check ps-0">
-                                    <label for="formFile" class="form-label"><b>Add upto 5 photos  *</b> (You must upload at least one photo)</label>
-                                    <input class="form-control" type="file" id="formFile" name="photo[]" multiple min="1" max="5"   accept="image/png,image/jpg, image/jpeg">
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <input type="file" name="imageone" required  id="image1">
+                                     
                                 </div>
+                                <img id="preview1" src="https://www.riobeauty.co.uk/images/product_image_not_found.gif"
+                                alt="preview image" style="max-height: 250px;">
                             </div>
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <input type="file" name="imagetwo"  id="image2" class="d-none">
+                                    
+                                </div>
+                                <img id="preview2" src="https://www.riobeauty.co.uk/images/product_image_not_found.gif"
+                                alt="preview image" style="max-height: 250px;">
+                            </div>
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <input type="file" name="imagethree"  id="image3" class="d-none">
+                                     
+                                </div>
+                                <img id="preview3" src="https://www.riobeauty.co.uk/images/product_image_not_found.gif"
+                                alt="preview image" style="max-height: 250px;">
+                            </div>
+                            
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <input type="file" name="imagefour"  id="image4" class="d-none">
+                                     
+                                </div>
+                                <img id="preview4" src="https://www.riobeauty.co.uk/images/product_image_not_found.gif"
+                                alt="preview image" style="max-height: 250px;">
+                            </div>
+                           
                                  <div class="col-6">
                                 <div class="form-check ps-0">
                                     <label for="formFile" class="form-label">Name  *</label>
@@ -147,14 +179,20 @@
                                     <p class="mb-0"><b>{{Auth::user()->email}}</b></p>
                                 </div>
                             </div>
-                                 <div class="col-12">
-                                    {!! Form::label('phonenumber', 'Add phone number *') !!}
-                                    {!! Form::number('phonenumber[]',Auth::user()->phone, array('id'=>'price','required','class'=>'form-control', 'min'=>'1','placeholder'=>'Ex: Enter phone number')) !!}
-                                
-                            </div>
+                               
+                                   
+                            <table class="table table-bordered" id="dynamic_field">   
 
-                          
-                        
+                                <tr>  
+            
+                                    <td><input type="tel" name="phonenumber[]" value="{{Auth::user()->phone}}" placeholder="phone number *" class="form-control name_list" /></td>  
+            
+                                    <td><button type="button" name="add" id="add" class="btn btn-success">Add Another Number</button></td>  
+            
+                                </tr>  
+            
+                            </table>  
+                       
                          
                             <div class="col-12">
                                 <div class="form-check">
@@ -183,24 +221,113 @@
 @section('page-script')
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-       const input = document.querySelector('#formFile');
+              var i=1;  
 
-// Listen for files selection
-input.addEventListener('change', (e) => {
-    // Retrieve all files
-    const files = input.files;
 
-    // Check files count
-    if (files.length > 2) {
-        alert(`Only 5 files are allowed to upload.`);
-        return;
-    }
+$('#add').click(function(){  
 
-    // TODO: continue uploading on server
-});
+     i++;  
+
+     $('#dynamic_field').append('<tr id="row'+i+'" class="dynamic-added"><td><input type="number" name="phonenumber[]" placeholder="Enter your New Phone Number" class="form-control name_list" /><span id="error" class="text-danger"></span></td><td><button type="button" required name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button> <input type="number" id="Otp" class="d-none"> <button type="button" class="btn-sm btn-info d-none" id="Otpvefiry">OTP Verify</button></td></tr>');  
+     $('#add').addClass('d-none');
+});  
+
+
+$(document).on('click', '.btn_remove', function(){  
+
+     var button_id = $(this).attr("id");   
+
+     $('#row'+button_id+'').remove();  
+     $('#add').removeClass('d-none');
+});  
+
+
+$('#image1').change(function(){
+            
+            let reader = new FileReader();
+         
+            reader.onload = (e) => { 
+         
+              $('#preview1').attr('src', e.target.result); 
+            }
+         
+            reader.readAsDataURL(this.files[0]); 
+            // $('#image1').addClass('d-none');
+            $('#image2').removeClass('d-none');
+           
+           });
+           $('#image2').change(function(){
+            
+            let reader = new FileReader();
+         
+            reader.onload = (e) => { 
+         
+              $('#preview2').attr('src', e.target.result); 
+            }
+         
+            reader.readAsDataURL(this.files[0]); 
+           
+            $('#image3').removeClass('d-none');
+           
+           });
+           $('#image3').change(function(){
+            
+            let reader = new FileReader();
+         
+            reader.onload = (e) => { 
+         
+              $('#preview3').attr('src', e.target.result); 
+            }
+         
+            reader.readAsDataURL(this.files[0]); 
+           
+            $('#image4').removeClass('d-none');
+           
+           });
+           $('#image4').change(function(){
+            let reader = new FileReader();
+            reader.onload = (e) => { 
+              $('#preview4').attr('src', e.target.result); 
+            }
+         
+            reader.readAsDataURL(this.files[0]); 
+                      
+           });
 $(document).ready(function () {
+    $(document).on('keyup', '.name_list', function(){  
+if($(this).val().length<11){
+    $('#error').html('Number Must Be 11 Digit'); 
+    $('#Otp').addClass('d-none');
+    $('#Otpvefiry').addClass('d-none');
+    return false;
+}
+else{
+    $('#error').html(null);
+
+       
+                number = $(this).val();
+                $.ajax({
+                    type: "post",
+                    url: url + '/user/searchphonenumber',
+                    data: {
+                        id:number
+
+                    },
+
+                    success: function(data) {
+                        $('#error').html('Number Verify'); 
+                    }, 
+                    error:function(data){
+                        $('#error').html('Number Not Verify, Please Check Your Phone To Get Otp'); 
+                       $('#Otp').removeClass('d-none');
+                       $('#Otpvefiry').removeClass('d-none');
+                    }
+                    
+                });
+            }
+                });
      var loggedIn = '{!! (auth()->user()->fullname) !!}';
-     console.log(loggedIn);
+    //  console.log(loggedIn);
      var divisionid ='{!! (auth()->user()->division_id) !!}';
     var districtid = '{!! (auth()->user()->district_id) !!}';
     var thanaid = '{!! (auth()->user()->thana_id) !!}';
@@ -261,33 +388,10 @@ $(document).ready(function () {
 
 });
 
-//for thana
-        $('#district_id').change(function(){
-            $('#thana_id').empty();
 
-    var districtid = $(this).val();
-
-    $.ajax({
-        type: "GET",
-        url: url + '/getthana/'+districtid,
-        data:{},
-        dataType: "JSON",
-        success:function(data) {
-           if(data){
-                 
-                    $.each(data, function(key, value){
-                       // alert(key);
-                        $('#thana_id').append('<option value="'+value._id+'">' + value.thana + '</option>');
-
-                    });
-                }
-
-            },
-    });
-    });
 
     $('#bikebrand_id').change(function(){
-    $('#bikemodel').empty();
+    $('#bikemodel_id').empty();
     $.ajax({
         type: "GET",
         url: url + '/getbikebrand/'+$(this).val(),
@@ -297,7 +401,6 @@ $(document).ready(function () {
            if(data){
                  
                     $.each(data, function(key, value){
-                       // alert(key);
                         $('#bikemodel_id').append('<option value="'+value._id+'">' + value.bikemodel + '</option>');
 
                     });
@@ -306,84 +409,10 @@ $(document).ready(function () {
             },
     });
     });
-    $('#addEmail').click(function(){
-        $.ajax({
-    url: url + '/user/updateemail',
-    method: "PUT",
-    type: "PUT",
-    data: {
-        email:$('#email').val()
-    },
-    success: function(d) {
-        if (d.success) {
-            Swal.fire({
-            icon: 'success',
-            title: "Email Add Successfully",
-                timer: 2000,
-                showConfirmButton: false,
-                });
-           
-             location.reload();
+  
 
+  
 
-
-        }else {
-            console.log(d);
-            Swal.fire({
-            icon: 'warning',
-            title: d.errors[0],
-                timer: 2000,
-                showConfirmButton: false,
-                });
-        }
-    },
-    error: function(d) {
-        console.log(d);
-    }
-});
-    })
-
-
-    $('#Updatedetails').click(function(){
-        $.ajax({
-    url: url + '/user/updateprofileinfo',
-    method: "PATCH",
-    type: "PATCH",
-    data: {
-        fullname:$('#fullname').val(),
-        division:$('#division_id').val(),
-        district:$('#district_id').val(),
-        thana:$('#thana_id').val(),
-       
-    },
-    success: function(d) {
-        if (d.success) {
-            Swal.fire({
-            icon: 'success',
-            title: "Info Update Successfully",
-                timer: 2000,
-                showConfirmButton: false,
-                });
-           
-             location.reload();
-
-
-
-        }else {
-            console.log(d);
-            Swal.fire({
-            icon: 'warning',
-            title: d.errors[0],
-                timer: 2000,
-                showConfirmButton: false,
-                });
-        }
-    },
-    error: function(d) {
-        console.log(d);
-    }
-});
-    })
 
 
 

@@ -310,6 +310,7 @@ Route::group([ 'prefix'=>'user',
         Route::get('dashboard', 'DashboardController@index');
         Route::get('addposting', 'DashboardController@addpostingview');
         Route::get('profile', 'UserController@index');
+        Route::post('searchphonenumber', 'UserController@searchphonenumber');
         Route::put('updateemail', 'UserController@updateemail');
         Route::patch('updateprofileinfo', 'UserController@updateprofileinfo');
         Route::post('deletenotification', 'DashboardController@deletenotification');

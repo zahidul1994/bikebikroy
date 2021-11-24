@@ -20,7 +20,8 @@
         <nav class="navbar navbar-expand-lg navbar-light">
             <div class="container">
                 <a class="navbar-brand py-0 me-0" href="#">
-                   <img src="assets/images/bikebikroylogo1.png" alt="" class="">
+                    <a class="navbar-brand py-0 me-0" href="#">
+                   <img src="{{asset('assets/images/bikebikroylogo1.png')}}" alt="" class="">
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <i class="fas fa-bars"></i>

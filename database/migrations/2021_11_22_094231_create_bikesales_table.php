@@ -15,7 +15,8 @@ class CreateBikesalesTable extends Migration
     {
         Schema::create('bikesales', function (Blueprint $table) {
            $table->string('title');
-           $table->string('slug')->unique();
+           $table->string('slug',300);
+        //    $table->string('slug')->unique();
            $table->bigInteger('user_id')->unsigned()->nullable();
            $table->foreign('user_id')->references('_id')->on('users')->onDelete('cascade');
            $table->decimal('price',8,2);

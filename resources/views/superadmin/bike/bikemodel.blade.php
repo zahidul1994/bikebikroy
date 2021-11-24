@@ -57,11 +57,11 @@
                 {!!Form::select('bikebrand_id',CommonFx::BikeBrand(),null, array('id'=>'bikebrand_id','required','class'=>'form-control','placeholder'=>'Select Bikebrand'))!!}
             </div>   
             <br>
-            <label for="bikemodel" class="form-label">Brand Name English *</label>
+            <label for="bikemodel" class="form-label">Bike Model Name English *</label>
             <div class="input-group">
                 {!! Form::text('bikemodel', null, ['id' => 'bikemodel', 'class' => 'form-control  mb-1']) !!}
             </div> 
-            <label for="bnbikemodel" class="form-label">Brand Name Bangla *</label>
+            <label for="bnbikemodel" class="form-label">Bike Model Name Bangla *</label>
             <div class="input-group">
                 {!! Form::text('bnbikemodel', null, ['id' => 'bnbikemodel', 'class' => 'form-control  mb-1']) !!}
             </div> 

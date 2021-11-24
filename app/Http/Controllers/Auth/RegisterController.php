@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;
+use App\Models\Setting;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -76,9 +77,12 @@ class RegisterController extends Controller
             'phone' => $request['phone'],
             'otp' =>mt_rand(10000, 99999) ,
             'status' =>2,
+            'package_id' =>Setting::value('defaultuserpackage_id'),
+            'salepost' =>Setting::value('defaultpostnumber'),
             'password' => Hash::make($request['password']),
         ]);
         if($info){
+            
             $flasher->addSuccess('Registion Successfully Done, Please Verify With OPT');
         return Redirect::to('otpverify/'.$request->phone);
         

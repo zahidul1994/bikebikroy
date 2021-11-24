@@ -17,6 +17,7 @@ class CreateBikebrandsTable extends Migration
            $table->string('bikebrand')->unique();
             $table->string('slug')->unique();
             $table->string('bnbikebrand')->unique();
+            $table->string('bikebrandimage')->nullable();
             $table->tinyInteger('status')->default(1);
              $table->timestamps();
         });

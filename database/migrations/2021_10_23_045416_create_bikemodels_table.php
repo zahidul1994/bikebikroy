@@ -19,6 +19,7 @@ class CreateBikemodelsTable extends Migration
             $table->foreign('bikebrand_id')->references('_id')->on('bikebrands')->onDelete('cascade');
             $table->string('slug')->unique();
             $table->string('bnbikemodel')->unique();
+            $table->string('bikemodelimage')->nullable();
             $table->timestamps();
         });
     }

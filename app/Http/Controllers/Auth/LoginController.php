@@ -8,6 +8,7 @@ use App\Models\Superadmin;
 use Illuminate\Http\Request;
 use Flasher\Prime\FlasherInterface;
 use App\Http\Controllers\Controller;
+use App\Models\Userphoneverify;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Lang;
 use Laravel\Socialite\Facades\Socialite;
@@ -111,6 +112,12 @@ class LoginController extends Controller
       //  dd($check);
         if ($check) {
             $check->update(array('email_verified_at' => Carbon::now(), 'status' => 1,'otp'=>null));
+            Userphoneverify::create([
+                    'user_id'=>$check['_id'],
+                     'status'=>1,
+                     'phonenumber'=>$request->phone,
+                     'expiredate'=>Date('y:m:d', strtotime('+60 days'))
+            ]);
             $flasher->addSuccess('Phone Number Verified, Please Login');
             return redirect('/login');
                
