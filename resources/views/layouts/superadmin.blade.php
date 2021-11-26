@@ -36,11 +36,13 @@
                 <ul class="dash-main-menu">
                     <li><a href="index.html" class="page-active"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
                     <li>
-                        <p class="layout-menu mb-0"><i class="far fa-copy"></i> Layout Options
+                        <p class="layout-menu mb-0"><i class="far fa-copy"></i> Team Member
                             <i class="fas fa-angle-right menu-angle-one"></i></p>
 
                         <ul class="dash-main-menu layout-toggle">
-                            <li><a href=""><i class="far fa-circle"></i> Default</a></li>
+                            <li><a href="{{url('superadmin/adminlist')}}"><i class="far fa-circle"></i> Admin List</a></li>
+                            <li><a href="{{url('superadmin/rolelist')}}"><i class="far fa-circle"></i> Role List</a></li>
+                            <li><a href="{{url('superadmin/adminlist')}}"><i class="far fa-circle"></i> Permission List</a></li>
                             <li>
                                 <p class="sidebar-collapse-menu"><i class="far fa-circle"></i> Sidebar Collapsed</p>
                             </li>

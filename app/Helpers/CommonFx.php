@@ -10,15 +10,18 @@ use App\Models\Smssent;
 use App\Models\Customer;
 use App\Models\District;
 use App\Models\Division;
+use App\Models\Bikebrand;
+use App\Models\Bikemodel;
+use App\Models\Permissions;
 use Illuminate\Support\Str;
 use App\Models\Complaintext;
 use App\Models\Printsetting;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
-use App\Models\Bikebrand;
-use App\Models\Bikemodel;
 use Illuminate\Support\Facades\Auth;
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Storage;
 use App\Notifications\Adminupdatenotification;
 use Symfony\Component\HttpFoundation\Request; 
 
@@ -54,19 +57,21 @@ public static function Divisionname(){
     return Division::pluck('division','_id');
     
     }
-    public static function Totalcustomerinfo(){
-        return DB::table('customers')
-        ->join('bills', 'customers.id', '=', 'bills.customer_id')
-        // ->join('collections', 'bills.id', '=', 'collections.bill_id')
-         ->where('customers.admin_id','=',Auth::guard('admin')->user()->id)
-         ->where('customers.status','=',1)
-        //  ->whereIn('customers.status',[1,3])
-         ->whereMonth('bills.created_at', date('m'))
-->whereYear('bills.created_at', date('Y'))
-        ->select('customers.id','bills.monthlyrent','bills.due','bills.discount','bills.advance','bills.addicrg','bills.vat','bills.paid','bills.total')
-        ->get();
-       
+    public static function Permissionname(){
+    return  Permissions::get();
+    
+    }
+    public static function Adminphtoupload($request){
         
+        $name=CommonFx::make_slug($request->adminname).uniqid().'_'.$request->photo->getClientOriginalName();
+        $request->photo->move(storage_path().'/app/files/shares/profileimage/', $name);
+      
+      $resizedImage_thumb = Image::make(storage_path().'/app/files/shares/profileimage/'.$name)->resize(35, null, function ($constraint) {
+          $constraint->aspectRatio();
+      });
+      
+        $resizedImage_thumb->save(storage_path() . '/app/files/shares/profileimage/thumbs/'.$name, 100);
+        return $name;
         }
 
         public static function Totalcustomercollection(){

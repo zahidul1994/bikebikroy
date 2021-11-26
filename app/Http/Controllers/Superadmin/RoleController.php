@@ -3,68 +3,83 @@ namespace App\Http\Controllers\Superadmin;
 use App\Models\Permissions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Spatie\Permission\Models\Role;
+use Maklad\Permission\Models\Role;
+use Maklad\Permission\Models\Permission;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
-use Kamaln7\Toastr\Facades\Toastr;
-use Spatie\Permission\Models\Permission;
+use Yajra\DataTables\Contracts\DataTable;
+use Illuminate\Pagination\LengthAwarePaginator;
+
 use Illuminate\Support\Facades\Validator;
 
 class RoleController extends Controller
 {
 public function index()
-{
-    $pageConfigs = ['pageHeader' => false, 'isFabButton' => false];
-    $role= Role::with('permissions')->latest()->paginate(10);
-    return view('superadmin.roles.index', ['pageConfigs' => $pageConfigs])->with('roles',$role)->with('i', (request()->input('page', 1) - 1) * 10); 
+{ 
+    //  dd(Role::with('permissions')->get());
+
+    if (request()->ajax()) {
+      
+        return datatables()->of(Role::with('permissions')->get())
+          ->addColumn('action', function ($data) {
+            $button = '<button title="Edit Division" id="editBtn" style="border:0; background: none; padding: 0 !important"   rid="' . $data->_id . '" class="btn-md"><i class="far fa-edit"></i></button>';
+            $button .= '&nbsp;&nbsp;';
+           $button .= '<button type="button" style="border:0; background: none; padding: 0 !important"  title="Delete"   id="deleteBtn" rid="' . $data->_id . '" class="btn-sm btn-warning"><i class="fas fa-trash"></i></button>';
+            return $button;
+          })
+          ->addColumn('permission' ,function($data){
+            $info=[];
+            foreach($data->permissions as  $v)
+                {
+                  $info[]=$v->name.' ';
+                  
+                }
+             return  $info;
+       
+      }) 
+      ->addIndexColumn()
+          ->rawColumns(['action','permission'])
+          ->make(true);
+      }
+      $breadcrumbs = [
+        ['link' => "superadmin/dashboard", 'name' => "Dashboard"], ['link' => "superadmin/rolelist", 'name' => "Rolelist"],
+    ];
     
+      return view('superadmin.role.index')->with('breadcrumbs', $breadcrumbs);
+
+   
 }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        $rolePermissions = Permission::join("role_has_permissions","role_has_permissions.permission_id","=","permissions.id")
-
-            ->get();
-        $permission= Permissions::get();
-        $breadcrumbs = [
-            ['link' => "superadmin", 'name' => "Home"], ['link' => "superadmin/accountrolelist", 'name' => "Role"], ['name' => "Create"],
-        ];
-        $pageConfigs = ['pageHeader' => true, 'isFabButton' => false];
-            return view('superadmin.roles.create',['pageConfigs' => $pageConfigs], ['breadcrumbs' => $breadcrumbs])->with('permission',$permission);
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+   
     public function store(Request $request)
     {
     //   dd($request);
-        $this->validate($request,[
-            
-            'name' => 'required|unique:roles',
-            'permission' => 'required',
-
-        ]);
-
+     
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|min:1|max:190|unique:roles',
+             'permission' => 'required',
+            ]);
+                if ($validator->fails()) {
+               return response()->json([
+                         'success' => false,
+             'errors' => $validator->errors()->all()
+                     ]);
+             } else {
         $role = Role::create(['name' => $request->input('name'),'guard_name'=>'superadmin']);
+        // $role = Role::create(['name' => $request->input('name')]);
         $role->syncPermissions($request->input('permission'));
+        return response()->json(['success' => true]);
         if ($role) {
-            Toastr::success("Role  Create Successfully", "Well Done");
-            return Redirect::to('superadmin/accountrolelist'); 
-    } else {
-        Toastr::warning("Role  Create Fail", "Sorry");
-        return Redirect::to('superadmin/accountrolelist'); 
+            return response()->json(['success' => false]);
+         }
+     else {
+   
+  
+        return response()->json(['success' => false]);
+    }
+  }
     
-        }
     }
     /**
      * Display the specified resource.
@@ -163,12 +178,9 @@ public function index()
     public function destroy($id)
     {
         if (Role::destroy($id)) {
-           
-            Toastr::success("Role  Delete Successfully", "Well Done");
-            return Redirect::to('superadmin/accountrolelist'); 
+            return response()->json(['success' => true]);
     } else {
-        Toastr::warning("Role  Delete Fail", "Sorry");
-        return Redirect::to('superadmin/accountrolelist'); 
+        return response()->json(['success' => false]);
     
          }
 

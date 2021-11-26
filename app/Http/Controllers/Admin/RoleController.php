@@ -1,23 +1,18 @@
 <?php
 namespace App\Http\Controllers\Admin;
-use App\Models\Permissions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
-use Kamaln7\Toastr\Facades\Toastr;
-use Spatie\Permission\Models\Permission;
-use Illuminate\Validation\Rule;
+use Maklad\Permission\Models\Role;
+use Maklad\Permission\Models\Permission;
+
 class RoleController extends Controller
 {
 public function index()
 {
-    $pageConfigs = ['pageHeader' => false, 'isFabButton' => false];
-    $role= Role::with('permissions')->whereadmin_id(Auth::id())->latest()->paginate(10);
-    return view('admin.roles.index', ['pageConfigs' => $pageConfigs])->with('roles',$role)->with('i', (request()->input('page', 1) - 1) * 10); 
-    
+   
 }
 
     /**

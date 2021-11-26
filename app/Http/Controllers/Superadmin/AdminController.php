@@ -1,24 +1,25 @@
 <?php
 
 namespace App\Http\Controllers\superadmin;
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Admin;
 use App\Helpers\CommonFx;
+use App\Mail\AdmininfoMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Kamaln7\Toastr\Facades\Toastr;
-use Spatie\Permission\Models\Role;
+use Maklad\Permission\Models\Role;
+use Flasher\Prime\FlasherInterface;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Intervention\Image\ImageManagerStatic as Image;
-use App\Notifications\Adminupdatenotification;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\AdmininfoMail;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Redirect;
-use Spatie\Permission\Models\Permission;
+use Maklad\Permission\Models\Permission;
 use Illuminate\Support\Facades\Validator;
+use App\Notifications\Adminupdatenotification;
+use Intervention\Image\ImageManagerStatic as Image;
 
 class AdminController extends Controller
 {
@@ -29,10 +30,39 @@ class AdminController extends Controller
      */
     public function index()
     {
-        $pageConfigs = ['pageHeader' => false, 'isFabButton' => false];
-   $admin= Admin::select('id','created_at','name','status','phone','image','email')->latest()->paginate(10);
-   return view('superadmin.createadmin.index',['pageConfigs' => $pageConfigs])->with('admininfo',$admin)   ->with('i', (request()->input('page', 1) - 1) * 10);
+        if (request()->ajax()) {
+            return datatables()->of(Admin::latest()->get())
+              ->addColumn('action', function ($data) {
+                $button = '<button title="Edit Package" id="editBtn" style="border:0; background: none; padding: 0 !important"   rid="' . $data->_id . '" class="btn-md"><i class="far fa-edit"></i></button>';
+                $button .= '&nbsp;&nbsp;';
+               $button .= '<button type="button" style="border:0; background: none; padding: 0 !important"  title="Delete"   id="deleteBtn" rid="' . $data->_id . '" class="btn-sm btn-warning"><i class="fas fa-trash"></i></button>';
+                return $button;
+              })
+              ->addColumn('photo', function($data){
+               
+               $button = '<img src="'.url('storage/app/files/shares/profileimage/thumbs/'.$data->image).'" class="card"/>';
+              return $button;
+          })
+              ->addColumn('status', function($data){
+                if($data->status==0){
+               $button = '<button type="button" rid="'.$data->_id.'" class="btn-sm Approved" title="Click for Aprove Status"><i class="fas fa-check-square"></i></button>';
+              return $button;
+          }
+          
+          else {
+              $button = '<button type="button" title="Aprove  Payment" class=" btn-sm" ><i class="fas fa-check-square"></i> </button>';
+              return $button;
+          }})
+       
+          ->addIndexColumn()
+              ->rawColumns(['action','status','photo'])
+              ->make(true);
+          }
+          $breadcrumbs = [
+            ['link' => "superadmin/dashboard", 'name' => "Superadmin"], ['link' => "superadmin/adminlist", 'name' => "Adminlist"]];
   
+        
+          return view('superadmin.createadmin.index')->with('breadcrumbs', $breadcrumbs);
       
     }
 
@@ -46,10 +76,10 @@ class AdminController extends Controller
         $breadcrumbs = [
             ['link' => "superadmin", 'name' => "Home"], ['link' => "superadmin/adminlist", 'name' => "Admin"], ['name' => "Create"],
         ];
-        $pageConfigs = ['pageHeader' => true, 'isFabButton' => false];
+      
      
-       
-        return view('superadmin.createadmin.create',['pageConfigs' => $pageConfigs], ['breadcrumbs' => $breadcrumbs]);
+        $roles = Role::pluck('name','name')->all();
+        return view('superadmin.createadmin.create',['breadcrumbs' => $breadcrumbs])->with('roles',$roles);
     }
 
     /**
@@ -58,57 +88,62 @@ class AdminController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, FlasherInterface $flasher)
     {
-       
-//return response(dd($request));exit;
-
-
+       if($request->hasfile('photo')){
+        $name=CommonFx::Adminphtoupload($request);
+       }
+       else{
+        $name='not-found.jpg';
+       }
+         
   
     $this->validate($request,[
-        'name' => 'required|max:60|min:3',
+        'adminname' => 'required|max:60|min:3',
         'phone' => 'required|numeric|digits:11|unique:admins',
         'roles' => 'required',
+        'admintype' => 'required',
         'email' => 'required|email|unique:admins',
-        'username' => 'required|min:3|unique:admins',
         'password' => 'required|min:6|max:30', 
         'confirm' => 'required|same:password', 
 
     ]);
-    try {
-        DB::beginTransaction();
+    // try {
+    //     DB::beginTransaction();
           
     $userinfo =Admin::create(array(
         'superadmin_id' =>Auth::guard('superadmin')->user()->id,
-        'name' => $request->name,
+        'adminname' => $request->adminname,
         'phone' => $request->phone,
-        'image' => 'not-found.jpg',
+        'image' => $name,
         'email' => $request->email,
+        'admintype' => $request->admintype,
         'email_verified_at'=>Carbon::now(),
         'gender' => 'male',
         'status' => 1,
         'password' =>Hash::make($request->password)
      
     ));
-
+    $userinfo->assignRole($request->input('roles'));
     
-   $maildata = [  
-            'name'=> $request->name,
-            'message' => 'Homeobari Superadmin Want you as a Admin. Your Email '.$request->email.' Your Password '.$request->password. '<a class="black-text"  href="'. url('/login/admin') . '">Login Now</a>',
-             'subject'=> 'Account Form Homeobari',
+//    $maildata = [  
+//             'name'=> $request->name,
+//             'message' => 'Homeobari Superadmin Want you as a Admin. Your Email '.$request->email.' Your Password '.$request->password. '<a class="black-text"  href="'. url('/login/admin') . '">Login Now</a>',
+//              'subject'=> 'Account Form Homeobari',
              
            
-  ];
-    Mail::to($userinfo)->send(new AdmininfoMail($maildata));
-    DB::commit();
-    Toastr::success("Admin  Create Successfully", "Well Done");
+//   ];
+//     Mail::to($userinfo)->send(new AdmininfoMail($maildata));
+    // DB::commit();
+    $flasher->addSuccess('Well done, Admin  Create Successfully');
+  
     return Redirect::to('superadmin/adminlist'); 
-    }
-    catch (\Exception $e) {
-        DB::rollBack();
-        Toastr::warning("Admin  Create Fail", "Sorry");
-        return Redirect::to('superadmin/adminlist'); 
-    }
+    // }
+    // catch (\Exception $e) {
+    //     DB::rollBack();
+    //     $flasher->addSuccess('Sorry , Admin  Create Fail');
+    //     return Redirect::to('superadmin/adminlist'); 
+    // }
 }
 
 
@@ -212,23 +247,20 @@ class AdminController extends Controller
     {
         $deleteadmin=Admin::destroy($id);
      
-         $maildata = [  
-            'name'=>'hi',
-            'message' => 'Homeobari Superadmin Delete Your Account. If You want Recover Your email please Contact ',
-             'subject'=> 'Account Delete',
+//          $maildata = [  
+//             'name'=>'hi',
+//             'message' => 'Homeobari Superadmin Delete Your Account. If You want Recover Your email please Contact ',
+//              'subject'=> 'Account Delete',
              
            
-  ];
-    Mail::to($deleteadmin)->send(new AdmininfoMail($maildata));
+//   ];
+//     Mail::to($deleteadmin)->send(new AdmininfoMail($maildata));
       
        if($deleteadmin) {
-          
-        Toastr::success("Admin  Delete Successfully", "Well Done");
-        return Redirect::to('superadmin/adminlist'); 
+        return response()->json(['success' => true]);
         } else {
-            
-            Toastr::warning("Admin  Delete Fail", "Sorry");
-          return Redirect::to('superadmin/adminlist'); 
+            return response()->json(['success' => false]);
+         
         }
     
     }

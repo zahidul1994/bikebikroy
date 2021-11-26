@@ -7,18 +7,20 @@ use Illuminate\Notifications\Notifiable;
 use Jenssegers\Mongodb\Auth\User as Authenticatable;
 use App\Notifications\AdminResetPasswordNotification;
 use Jenssegers\Mongodb\Eloquent\Model as Eloquent; //for use mongodb
+use Maklad\Permission\Traits\HasRoles;
 class Admin extends  Authenticatable implements MustVerifyEmail
 {
  use Notifiable;
-     
-     use SoftDeletes;
+ use HasRoles;
+ use SoftDeletes;
      protected $guard = 'admin';
+     protected $guard_name = 'superadmin';
    
     protected $dates = ['deleted_at'];
     // protected $connection = 'mongodb';
 
     protected $fillable = [
-      'email_verified_at', 'superadmin_id','phone','name','image', 'email', 'password','status','gender','remember_token','company','package','web','otp','country','address','actype','customerprefix','id'
+      'email_verified_at', 'superadmin_id','phone','adminname','image', 'email', 'password','status','gender','remember_token','admintype'
     ];
 
     protected $hidden = [

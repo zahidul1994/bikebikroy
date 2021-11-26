@@ -13,7 +13,7 @@ class Superadmin extends  Authenticatable
     
        
        //use SoftDeletes;
-
+    
        protected $guard = 'superadmin';
         protected $dates = ['deleted_at'];
        

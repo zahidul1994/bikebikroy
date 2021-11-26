@@ -13,18 +13,18 @@ class PermissionSeeder extends Seeder
     public function run()
     {
         $permission=array(
-          'Customer-List',
-          'Customer-Create',
-          'Customer-Edit',
-          'Customer-Delete', 
-        'Collection-List',
-        'Collection-Create',
-        'Collection-Edit',
-        'Collection-Delete', 
-          'SMS-List',
-          'SMS-Create',
-          'SMS-Edit',
-          'SMS-Delete', 
+          'Register-List',
+          'Register-Create',
+          'Register-Edit',
+          'Register-Delete', 
+          'Bikesale-List',
+          'Bikesale-Create',
+          'Bikesale-Edit',
+          'Bikesale-Delete', 
+          'Bikebuy-List',
+          'Bikebuy-Create',
+          'Bikebuy-Edit',
+          'Bikebuy-Delete', 
           'Print-List',
         'Print-Create',
         'Print-Edit',
@@ -38,7 +38,7 @@ class PermissionSeeder extends Seeder
         );
         foreach($permission as $v) {
             $newlist  = new Permissions();
-            $newlist->guard_name ='admin';
+              $newlist->guard_name ='superadmin';
             $newlist->name =$v;
             $newlist->save();
         }

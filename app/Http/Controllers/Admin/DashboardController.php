@@ -24,21 +24,25 @@ class DashboardController extends Controller
 {
  public function __construct()
     {
-        $this->middleware('verified');
+        // $this->middleware('verified');
     }
     
     public function index()
     { 
        
-        $pageConfigs = ['navbarLarge' => false];
-         $user=User::whereadmin_id(Auth::id())->select('admin_id','id','status')->get(); 
-        $contact= Contact::whereadmin_id(Auth::id())->select('admin_id','id','status')->get();
-        $smsinfo= Smssent::whereadmin_id(Auth::id())->select('admin_id','id','blance','smsrate')->first();
-        $customer= Customer::whereadmin_id(Auth::id())->select('admin_id','id','status')->get();
-        $complain= Complain::whereadmin_id(Auth::id())->select('admin_id','id','status')->get();
+        // $pageConfigs = ['navbarLarge' => false];
+        //  $user=User::whereadmin_id(Auth::id())->select('admin_id','id','status')->get(); 
+        // $contact= Contact::whereadmin_id(Auth::id())->select('admin_id','id','status')->get();
+        // $smsinfo= Smssent::whereadmin_id(Auth::id())->select('admin_id','id','blance','smsrate')->first();
+        // $customer= Customer::whereadmin_id(Auth::id())->select('admin_id','id','status')->get();
+        // $complain= Complain::whereadmin_id(Auth::id())->select('admin_id','id','status')->get();
      
+        $breadcrumbs = [
+            ['link' => "admin/dashboard", 'name' => "Admin"], ['name' => "Dashboard"]];
+  
 
-       return view('admin.dashboard',['pageConfigs' => $pageConfigs], compact('user','contact','smsinfo','customer','complain'));
+
+       return view('admin.dashboard',['breadcrumbs' => $breadcrumbs]);
     }
 
     /**

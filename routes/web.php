@@ -95,15 +95,14 @@ Route::group([ 'prefix'=>'superadmin',
   //AccountPermission End
 
    //AccountRole Start
-   Route::get('accountrolelist','RoleController@index');
+   Route::get('rolelist','RoleController@index');
    Route::get('rolesearch','RoleController@rolesearch');
-   Route::get('createaccountrole','RoleController@create');
-   Route::post('createaccountrole','RoleController@store');
+    Route::post('createtrole','RoleController@store');
    Route::post('allpermissionlist','RoleController@allpermissionlist');
    Route::get('editaccountrole/{id}','RoleController@edit');
    Route::get('showrolepermission/{id}','RoleController@show');
    Route::put('updateaccountrole/{id}','RoleController@update');
-   Route::delete('deleteaccountrole/{id}','RoleController@destroy');
+   Route::delete('deleterole/{id}','RoleController@destroy');
    //AccountRole End
 
   
@@ -115,7 +114,7 @@ Route::group([ 'prefix'=>'superadmin',
    Route::post('createadmin','AdminController@store');
    Route::get('editadmin/{id}','AdminController@edit');
    Route::put('updateadmin/{id}','AdminController@update');
-  Route::delete('deleteteadmin/{id}','AdminController@destroy');
+  Route::delete('deleteadmin/{id}','AdminController@destroy');
   Route::post('adminstatus', 'AdminController@setapproval'); 
    //Accountcreate  End
 
@@ -288,13 +287,29 @@ Route::post('sendsmscustomer','CustomerController@sendsmscustomer');
 
 //Customer  End
 
+    }
 
+);
+Route::group([ 'prefix'=>'admin',
+    'namespace'=>'Admin',
+    'middleware'=> 'auth:admin'
 
+    ], function() {
+        Route::get('dashboard', 'DashboardController@index');
+        Route::get('addposting', 'DashboardController@addpostingview');
+        Route::get('profile', 'UserController@index');
+        Route::post('searchphonenumber', 'UserController@searchphonenumber');
+        Route::put('updateemail', 'UserController@updateemail');
+        Route::patch('updateprofileinfo', 'UserController@updateprofileinfo');
+        Route::post('deletenotification', 'DashboardController@deletenotification');
+        Route::post('seennotification', 'DashboardController@seennotification');
+        Route::get('autolocation','DashboardController@autolocation');
+        //add sale
+        Route::resource('bikesale', 'BikesaleController');
 
     }
 
 );
-
 Route::get('login','Auth\Lof@index');
 Route::post('login', 'Auth\LoginController@UserLogin');
 Route::get('login', 'Auth\LoginController@customloginForm');

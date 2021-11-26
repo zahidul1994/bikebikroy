@@ -6,10 +6,11 @@ use DB;
 use App\Models\Permissions;
 use Illuminate\Http\Request;
 use Kamaln7\Toastr\Facades\Toastr;
-use Spatie\Permission\Models\Role;
+use Maklad\Permission\Models\Role;
+use Maklad\Permission\Models\Permission;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redirect;
-use Spatie\Permission\Models\Permission;
+
 
 
 class PermissionController extends Controller
