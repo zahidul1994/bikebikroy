@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'default' => env('QUEUE_CONNECTION', 'sync'),
+    'default' => env('QUEUE_CONNECTION', 'mongodb'),
 
     /*
     |--------------------------------------------------------------------------
@@ -70,7 +70,17 @@ return [
             'block_for' => null,
             'after_commit' => false,
         ],
-
+        'connections' => [
+            'database' => [
+                'driver' => 'mongodb',
+                // You can also specify your jobs specific database created on config/database.php
+                'connection' => 'mongodb-job',
+                'table' => 'jobs',
+                'queue' => 'default',
+                'expire' => 60,
+            ],
+        ],
+        
     ],
 
     /*
@@ -84,10 +94,17 @@ return [
     |
     */
 
+    // 'failed' => [
+    //     'driver' => env('QUEUE_FAILED_DRIVER', 'database-uuids'),
+    //     'database' => env('DB_CONNECTION', 'mysql'),
+    //     'table' => 'failed_jobs',
+    // ],
     'failed' => [
-        'driver' => env('QUEUE_FAILED_DRIVER', 'database-uuids'),
-        'database' => env('DB_CONNECTION', 'mysql'),
+        'driver' => 'mongodb',
+        // You can also specify your jobs specific database created on config/database.php
+        'database' => 'mongodb',
         'table' => 'failed_jobs',
     ],
+    
 
 ];

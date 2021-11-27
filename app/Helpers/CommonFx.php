@@ -92,15 +92,10 @@ public static function Divisionname(){
         return District::pluck('district','_id');
         
         }
-        public static function Connect(){
-            $info=User::whereadmin_id(Auth::id())->first();
-            if($info){
-                return User::whereadmin_id(Auth::id())->select('username','id');
-            }
-            else{
-                return Admin::whereid(Auth::id())->pluck('name','id');
-            }
-     
+        public static function Adminlist(){
+          
+                return Admin::where('_id','!=',Auth::id())->pluck('adminname','_id');
+          
         
         }    public static function CompanyEmploye(){
           

@@ -43,7 +43,7 @@
                     </div> 
                     <div class="mb-3">
                        {!! Form::label('admintype', 'Admin Type *') !!}
-             {!!Form ::select('admintype',['salesmanager'=>'Sales Manager','qcmanager'=>'QC Manager',',productmanager'=>',Product Manager','productaproved'=>'Product Aproved','moderationpanel'=>'Moderation Panel'], 'salesmanager', array('required','id'=>'admintype', 'class'=>'form-control'))!!}  
+             {!!Form ::select('admintype',['salesmanager'=>'Sales Manager','qcmanager'=>'QC Manager','productmanager'=>',Product Manager','productaproved'=>'Product Aproved','moderationpanel'=>'Moderation Panel'], 'salesmanager', array('required','id'=>'admintype', 'class'=>'form-control'))!!}  
                     </div>
                     <div class="mb-3">
                         {!! Form::label('status', 'Account Type *') !!}

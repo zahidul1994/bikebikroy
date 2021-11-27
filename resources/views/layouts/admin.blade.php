@@ -35,24 +35,24 @@
             <div class="main-dashboard-menu">
                 <ul class="dash-main-menu">
                     <li><a href="index.html" class="page-active"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-                    @can('edit articles')
+                    {{-- @can('edit articles') --}}
                     
                  
                     <li>
-                        <p class="layout-menu mb-0"><i class="far fa-copy"></i> Team Member
+                        <p class="layout-menu mb-0"><i class="far fa-copy"></i> Bike Sale
                             <i class="fas fa-angle-right menu-angle-one"></i></p>
 
                         <ul class="dash-main-menu layout-toggle">
-                            <li><a href="{{url('superadmin/adminlist')}}"><i class="far fa-circle"></i> Admin List</a></li>
-                            <li><a href="{{url('superadmin/rolelist')}}"><i class="far fa-circle"></i> Role List</a></li>
-                            <li><a href="{{url('superadmin/adminlist')}}"><i class="far fa-circle"></i> Permission List</a></li>
+                            <li><a href="{{url('admin/bikesalelist')}}"><i class="far fa-circle"></i> Bikesale List</a></li>
+                            <li><a href="{{url('admin/rolelist')}}"><i class="far fa-circle"></i> Role List</a></li>
+                            <li><a href="{{url('admin/adminlist')}}"><i class="far fa-circle"></i> Permission List</a></li>
                             <li>
                                 <p class="sidebar-collapse-menu"><i class="far fa-circle"></i> Sidebar Collapsed</p>
                             </li>
 
                         </ul>
                     </li>
-                    @endcan
+                    {{-- @endcan --}}
                     <li><a href="widgets.html"><i class="fas fa-th"></i> Widgets</a></li>
                     <li><a href="https://www.chartjs.org/" target="_blank"><i class="fas fa-chart-pie"></i> Charts</a></li>
                     <li>
@@ -81,8 +81,8 @@
 
                         <ul class="dash-main-menu page-toggle">
 
-                            <li><a href="{{url('superadmin/bikebrandlist')}}"><i class="far fa-circle"></i>Bike Brand List</a></li>
-                            <li><a href="{{url('superadmin/bikemodellist')}}"><i class="far fa-circle"></i> Model List</a></li>
+                            <li><a href="{{url('admin/bikebrandlist')}}"><i class="far fa-circle"></i>Bike Brand List</a></li>
+                            <li><a href="{{url('admin/bikemodellist')}}"><i class="far fa-circle"></i> Model List</a></li>
                             <li><a href="sign-up.html"><i class="far fa-circle"></i> Register</a></li>
                            
 
@@ -97,8 +97,8 @@
                         </p>
 
                         <ul class="dash-main-menu component-toggle">
-                            <li><a href="{{url('superadmin/packagelist')}}"><i class="far fa-circle"></i> Package List</a></li>
-                           <li><a href="{{url('superadmin/commandlist')}}"><i class="far fa-circle"></i> Command</a></li>
+                            <li><a href="{{url('admin/packagelist')}}"><i class="far fa-circle"></i> Package List</a></li>
+                           <li><a href="{{url('admin/commandlist')}}"><i class="far fa-circle"></i> Command</a></li>
 
                         </ul>
                     </li>
@@ -109,11 +109,11 @@
                         </p>
 
                         <ul class="dash-main-menu component-toggle">
-                            <li><a class="page-active" href="{{url('superadmin/autolocation')}}"><i class="far fa-circle"></i> Auto Add Location</a></li>
-                           <li><a href="{{url('superadmin/commandlist')}}"><i class="far fa-circle"></i> Command</a></li>
-                           <li><a href="{{url('superadmin/divisionlist')}}"><i class="far fa-circle"></i> Divison List</a></li>
-                           <li><a href="{{url('superadmin/districtlist')}}"><i class="far fa-circle"></i> District List</a></li>
-                           <li><a href="{{url('superadmin/thanalist')}}"><i class="far fa-circle"></i> Thana</a></li>
+                            <li><a class="page-active" href="{{url('admin/autolocation')}}"><i class="far fa-circle"></i> Auto Add Location</a></li>
+                           <li><a href="{{url('admin/commandlist')}}"><i class="far fa-circle"></i> Command</a></li>
+                           <li><a href="{{url('admin/divisionlist')}}"><i class="far fa-circle"></i> Divison List</a></li>
+                           <li><a href="{{url('admin/districtlist')}}"><i class="far fa-circle"></i> District List</a></li>
+                           <li><a href="{{url('admin/thanalist')}}"><i class="far fa-circle"></i> Thana</a></li>
 
                         </ul>
                     </li>
@@ -226,7 +226,7 @@
 
                                 <div class="user-profile">
                                     <div class="top-profile-img">
-                                        <img class="" src="{{@asset('storage/app/files/shares/profileimage/'.Auth::user()->image)}}" alt="" data-bs-toggle="dropdown">
+                                        <img class="" src="{{@asset('storage/app/files/shares/profileimage/'.Auth::user()->photo)}}" alt="" data-bs-toggle="dropdown">
 
 
                                         <div class="profile-box dropdown-menu">

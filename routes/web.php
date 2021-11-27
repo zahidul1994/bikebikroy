@@ -307,6 +307,15 @@ Route::group([ 'prefix'=>'admin',
         //add sale
         Route::resource('bikesale', 'BikesaleController');
 
+//bikesale start
+        Route::get('bikesalelist','BikesaleController@index');
+        Route::post('createbikemodel','BikesaleController@store');
+        Route::get('editbikesale/{id}','BikesaleController@edit');
+         Route::patch('updatebikemodel/{id}','BikesaleController@update');
+         Route::delete('deletebikemodel/{id}','BikesaleController@destroy');
+
+//bikesale end
+
     }
 
 );
